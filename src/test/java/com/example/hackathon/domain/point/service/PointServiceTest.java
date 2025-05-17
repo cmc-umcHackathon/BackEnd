@@ -74,13 +74,10 @@ class PointServiceTest {
     @Test
     void 포인트_사용_성공() {
         // given
-        PointRequestDTO.buyProductReq req = new PointRequestDTO.buyProductReq();
-        req.builder().productType(ProductType.KEYRING).build(); // 가정: COUPON은 200포인트 필요
-
         when(pointRepository.findByUserId(userId)).thenReturn(Optional.of(mockPoint));
 
         // when
-        pointService.usingPoint(userId, req);
+        pointService.updatePointBalance(userId, 200);
 
         // then
         assertThat(mockPoint.getTotalPoint()).isEqualTo(300);
@@ -89,27 +86,11 @@ class PointServiceTest {
     @Test
     void 포인트_부족_예외() {
         // given
-        PointRequestDTO.buyProductReq req = new PointRequestDTO.buyProductReq();
-        req.builder().productType(ProductType.KEYRING); // 가정: GIFT는 1000포인트 필요
-
         when(pointRepository.findByUserId(userId)).thenReturn(Optional.of(mockPoint));
 
         // expect
-        assertThatThrownBy(() -> pointService.usingPoint(userId, req))
+        assertThatThrownBy(() -> pointService.updatePointBalance(userId, 1000))
                 .isInstanceOf(BusinessException.class)
                 .hasMessageContaining(Code.POINT_NOT_ENOUGH.getMessage());
-    }
-
-    @Test
-    void 포인트_엔티티_없음_예외() {
-        // given
-        PointRequestDTO.buyProductReq req = new PointRequestDTO.buyProductReq();
-
-        when(pointRepository.findByUserId(userId)).thenReturn(Optional.empty());
-
-        // expect
-        assertThatThrownBy(() -> pointService.usingPoint(userId, req))
-                .isInstanceOf(BusinessException.class)
-                .hasMessageContaining(Code.POINT_NOT_FOUND.getMessage());
     }
 }

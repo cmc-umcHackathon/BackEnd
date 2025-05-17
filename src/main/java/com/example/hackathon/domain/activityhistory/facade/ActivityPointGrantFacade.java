@@ -55,8 +55,7 @@ public class ActivityPointGrantFacade {
                 activity.getPoint()
         );
 
-        // TODO 포인트 발급 연동
-//        pointService.grant(user, activity.getPoint());
+        pointService.updatePointBalance(userId, activity.getPoint());
     }
 
     private boolean isAlreadyAttendedToday(ActivityHistoryResponseDto dto) {

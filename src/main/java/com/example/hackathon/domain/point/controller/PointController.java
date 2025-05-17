@@ -27,10 +27,4 @@ public class PointController {
         return Response.ok(totalPoint);
     }
 
-    @Operation(summary = "포인트 사용 API", description = "보유한 포인트를 사용합니다.")
-    @PostMapping("/my/product")
-    public Response<Void> usingPoint(@AuthUser Long userId, @RequestBody PointRequestDTO.buyProductReq req) {
-        pointService.usingPoint(userId, req);
-        return Response.ok();
-    }
 }
