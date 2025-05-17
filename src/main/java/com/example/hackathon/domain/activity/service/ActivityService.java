@@ -29,7 +29,10 @@ public class ActivityService {
         this.categoryRepository = categoryRepository;
     }
 
-    public List<ActivityResponseDto> getActivitiesByCategoryWithTodayFlags(Long categoryId, List<Long> todayActivityIds) {
+    public List<ActivityResponseDto> getActivitiesByCategoryWithTodayFlags(
+            Long categoryId,
+            List<Long> todayActivityIds
+    ) {
         return activityRepository.findByCategoryIdAndIsDisplayedTrueOrderBySortOrderAsc(categoryId).stream()
                 .map(activity -> toResponseDto(activity, todayActivityIds.contains(activity.getId())))
                 .collect(Collectors.toList());
@@ -47,9 +50,15 @@ public class ActivityService {
                 .orElse(null);
     }
 
-    public void addUserActivities(Long userId, ActivityNewRequestDto.AddActivity request) {
+    public void addUserActivities(
+            Long userId,
+            ActivityNewRequestDto.AddActivity request
+    ) {
         User user = userRepository.findByKakaoId(userId)
-                .orElseThrow(() -> new BusinessException(Code.USER_NOT_FOUND, "이미 오늘 참여한 활동입니다."));
+                .orElseThrow(() -> new BusinessException(
+                        Code.USER_NOT_FOUND,
+                        "이미 오늘 참여한 활동입니다.")
+                );
 
         Category category = categoryRepository.findByCategoryType(request.getCategoryType())
                 .orElseThrow(() -> new BusinessException(Code.CATEGORY_NOT_FOUND));
@@ -69,6 +78,8 @@ public class ActivityService {
     private ActivityResponseDto toResponseDto(Activity activity) {
         return new ActivityResponseDto(
                 activity.getId(),
+                activity.getTitle(),
+                activity.getSubtitle(),
                 activity.getDescription(),
                 activity.getPoint(),
                 activity.getSortOrder(),
@@ -76,9 +87,14 @@ public class ActivityService {
         );
     }
 
-    private ActivityResponseDto toResponseDto(Activity activity, boolean isTodayActivity) {
+    private ActivityResponseDto toResponseDto(
+            Activity activity,
+            boolean isTodayActivity
+    ) {
         return new ActivityResponseDto(
                 activity.getId(),
+                activity.getTitle(),
+                activity.getSubtitle(),
                 activity.getDescription(),
                 activity.getPoint(),
                 activity.getSortOrder(),
