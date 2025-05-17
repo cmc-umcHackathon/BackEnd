@@ -45,6 +45,10 @@ public class Category extends BaseEntity {
         return id;
     }
 
+    public void setCategoryType(CategoryType categoryType) {
+        this.categoryType = categoryType;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
