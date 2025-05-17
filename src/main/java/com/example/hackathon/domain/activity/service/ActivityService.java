@@ -48,7 +48,7 @@ public class ActivityService {
     }
 
     public void addUserActivities(Long userId, ActivityNewRequestDto.AddActivity request) {
-        User user = userRepository.findById(userId)
+        User user = userRepository.findByKakaoId(userId)
                 .orElseThrow(() -> new BusinessException(Code.USER_NOT_FOUND, "이미 오늘 참여한 활동입니다."));
 
         Category category = categoryRepository.findByCategoryType(request.getCategoryType())

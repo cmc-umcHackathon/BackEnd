@@ -16,12 +16,12 @@ public class UserService {
     private final UserRepository userRepository;
 
     public User findOrCreate(KakaoUserInfoDto userInfo) {
-        return userRepository.findById(userInfo.getId())
+        return userRepository.findByKakaoId(userInfo.getId())
                 .orElseGet(() -> userRepository.save(userInfo.toEntity()));
     }
 
-    public UserProfileDto getProfile(Long email) {
-        User user = userRepository.findById(email)
+    public UserProfileDto getProfile(Long id) {
+        User user = userRepository.findByKakaoId(id)
                 .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
         return new UserProfileDto(user);
     }
