@@ -1,7 +1,7 @@
 package com.example.hackathon.domain.mypage.controller;
 
 
-import com.example.hackathon.common.response.Response;
+import com.example.hackathon.global.response.Response;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
