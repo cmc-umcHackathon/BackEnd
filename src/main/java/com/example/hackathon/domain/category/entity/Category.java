@@ -1,13 +1,18 @@
 package com.example.hackathon.domain.category.entity;
 
+import com.example.hackathon.global.BaseEntity;
 import jakarta.persistence.*;
+import lombok.Getter;
+
 import java.time.LocalDateTime;
 
 @Entity
+@Getter
 @Table(name = "CATEGORY")
-public class Category {
+public class Category extends BaseEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID", nullable = false)
     private Long id;
 
@@ -20,14 +25,8 @@ public class Category {
     @Column(name = "SORT_ORDER", nullable = false)
     private Integer sortOrder = 1;
 
-    @Column(name = "REG_DT", nullable = false)
-    private LocalDateTime regDt;
-
     @Column(name = "REG_ID", nullable = false, length = 50)
     private String regId;
-
-    @Column(name = "UPD_DT", nullable = false)
-    private LocalDateTime updDt;
 
     @Column(name = "UPD_ID", length = 50)
     private String updId;
