@@ -39,13 +39,13 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v2
 
       - name: Docker 이미지 생성
-        run: docker build -t hackathon-ecr .
+        run: docker build -t hackthon-ecr .
 
       - name: Docker 이미지에 Tag 붙이기
-        run: docker tag hackathon-ecr ${{ steps.login-ecr.outputs.registry }}/hackathon-ecr
+        run: docker tag hackthon-ecr ${{ steps.login-ecr.outputs.registry }}/hackthon-ecr
 
       - name: ECR에 Docker 이미지 Push하기
-        run: docker push ${{ steps.login-ecr.outputs.registry }}/hackathon-ecr:latest
+        run: docker push ${{ steps.login-ecr.outputs.registry }}/hackthon-ecr:latest
 
       - name: 압축하기
         run: tar -czvf $GITHUB_SHA.tar.gz appspec.yml scripts
