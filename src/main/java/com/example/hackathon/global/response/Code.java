@@ -1,4 +1,4 @@
-package com.example.hackathon.response;
+package com.example.hackathon.global.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

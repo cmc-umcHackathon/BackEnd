@@ -1,7 +1,7 @@
-package com.example.hackathon.exception;
+package com.example.hackathon.global.exception;
 
-import com.example.hackathon.response.Code;
-import com.example.hackathon.response.Response;
+import com.example.hackathon.global.response.Code;
+import com.example.hackathon.global.response.Response;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.BeanCreationException;
