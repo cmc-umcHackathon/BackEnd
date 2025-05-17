@@ -1,9 +1,6 @@
 package com.example.hackathon.global.util;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -14,6 +11,8 @@ import java.util.Date;
 
 @Component
 public class JwtUtil {
+
+    private JwtParser jwtParser;
 
     @Value("${jwt.secret}")
     private String secret;
@@ -51,6 +50,13 @@ public class JwtUtil {
         } catch (JwtException | IllegalArgumentException e) {
             return false;
         }
+    }
+
+    public Long getUserIdFromToken(String token) {
+        if (token.startsWith("Bearer ")) {
+            token = token.substring(7).trim();      // user_id 파싱을 위한 Bearer 제거
+        }
+        return jwtParser.parseClaimsJws(token).getBody().get("user_id", Long.class);
     }
 
 }
