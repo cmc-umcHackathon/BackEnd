@@ -36,7 +36,7 @@ public class ActivityController {
 
     @Operation(summary = "실천 사항 등록 API", description = "유저가 실천 사항을 등록합니다.")
     @PostMapping("/user/activities")
-    public Response<Void> addUserActivities(@AuthUser Long userId, @RequestBody  ActivityNewRequestDto activityRequest) {
+    public Response<Void> addUserActivities(@AuthUser Long userId, @RequestBody  ActivityNewRequestDto.AddActivity activityRequest) {
         activityService.addUserActivities(userId, activityRequest);
 
         return Response.ok();

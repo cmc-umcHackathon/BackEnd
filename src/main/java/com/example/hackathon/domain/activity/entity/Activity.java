@@ -1,8 +1,11 @@
 package com.example.hackathon.domain.activity.entity;
 
+import com.example.hackathon.domain.category.entity.Category;
 import com.example.hackathon.domain.category.entity.CategoryType;
+import com.example.hackathon.domain.user.entity.User;
 import com.example.hackathon.global.BaseEntity;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -10,6 +13,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "ACTIVITY")
 @Getter
+@Builder
 public class Activity extends BaseEntity {
 
     @Id
@@ -23,9 +27,11 @@ public class Activity extends BaseEntity {
     @Column(name = "DESCRIPTION", nullable = false, length = 30)
     private String description;
 
+    @Builder.Default
     @Column(name = "POINT", nullable = false)
     private Integer point = 0;
 
+    @Builder.Default
     @Column(name = "SORT_ORDER", nullable = false)
     private Integer sortOrder = 1;
 
@@ -52,5 +58,11 @@ public class Activity extends BaseEntity {
     @Column(name = "UPD_ID", length = 50)
     private String updId;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private Category category;
 }

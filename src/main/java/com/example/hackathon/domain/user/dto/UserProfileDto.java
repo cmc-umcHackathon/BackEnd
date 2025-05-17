@@ -13,8 +13,7 @@ public class UserProfileDto {
 
     public UserProfileDto(User user) {
         this.id = user.getId();
-        this.nickname = user.getNickname();
-        this.role = user.getRole();
+        this.nickname = user.getName();
     }
 }
 

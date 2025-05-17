@@ -38,7 +38,7 @@ public class CategoryService {
                 category.getDescription(),
                 category.getParentCode(),
                 category.getSortOrder(),
-                category.getRegDt()
+                category.getCreatedAt()
         );
     }
 }

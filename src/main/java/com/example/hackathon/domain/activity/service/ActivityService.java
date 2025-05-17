@@ -10,9 +10,7 @@ import com.example.hackathon.domain.user.entity.User;
 import com.example.hackathon.domain.user.repository.UserRepository;
 import com.example.hackathon.global.exception.BusinessException;
 import com.example.hackathon.global.response.Code;
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import com.example.hackathon.domain.user.repository.UserRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;

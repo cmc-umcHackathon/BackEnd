@@ -7,7 +7,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+
 import java.util.Map;
+
+import static com.example.hackathon.domain.user.enums.OAuthProvider.KAKAO;
 
 @Getter
 @NoArgsConstructor
@@ -15,7 +18,7 @@ import java.util.Map;
 public class KakaoUserInfoDto {
 
     private Long id;
-    private String nickname;
+    private String name;
 
     @JsonCreator
     public KakaoUserInfoDto(
@@ -25,14 +28,14 @@ public class KakaoUserInfoDto {
         this.id = id;
 
         Map<String, Object> profile = (Map<String, Object>) account.get("profile");
-        this.nickname = profile != null ? (String) profile.get("nickname") : null;
+        this.name = profile != null ? (String) profile.get("nickname") : null;
     }
 
     public User toEntity() {
         return User.builder()
                 .id(id)
-                .nickname(nickname)
-                .oauthProvider("kakao")
+                .name(name)
+                .oauthProvider(KAKAO)
                 .build();
     }
 }
