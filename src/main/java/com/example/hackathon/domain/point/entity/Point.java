@@ -5,9 +5,7 @@ import com.example.hackathon.global.BaseEntity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.cglib.core.Local;
 
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -24,6 +22,10 @@ public class Point extends BaseEntity {
     private User user;
 
     private Integer totalPoint;    // 총 포인트량
+
+    @Enumerated(EnumType.STRING)
+    @Column(name="PRODUCT_TYPE")
+    private ProductType productType;
 
     // Getter
     public Long getId() {

@@ -31,7 +31,7 @@ public class Category extends BaseEntity {
     @Column(name = "UPD_ID", length = 50)
     private String updId;
 
-    @Enumerated(EnumType.STRING) // enum을 문자열로 저장
+    @Enumerated(EnumType.STRING)
     @Column(name="CATEGORY_TYPE")
     private CategoryType categoryType;
 
