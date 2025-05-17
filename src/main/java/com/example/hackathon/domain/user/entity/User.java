@@ -26,7 +26,7 @@ public class User extends BaseEntity {
     @Comment("회원 고유값")
     private Long id;
 
-    @Column(name = "KAKAO_ID", unique = true)
+    @Column(name = "KAKAO_ID", unique = true, nullable = false)
     @Comment("카카오 ID")
     private Long kakaoId;
 
