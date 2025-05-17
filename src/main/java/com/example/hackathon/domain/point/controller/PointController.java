@@ -20,7 +20,7 @@ public class PointController {
         this.pointService = pointService;
     }
 
-    @Operation(summary = "보유 포인트 및 실천 횟수 조회", description = "유저가 보유한 총 포인트와 실천 횟수를 조회합니다.")
+    @Operation(summary = "총 보유 포인트 조회", description = "유저가 보유한 총 포인트를 조회합니다.")
     @GetMapping("/my/activity-info")
     public Response<Integer> getUserPoint(@AuthUser Long userId) {
         Integer totalPoint = pointService.getUserTotalPoint(userId);
