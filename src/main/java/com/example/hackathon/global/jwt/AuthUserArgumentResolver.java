@@ -33,6 +33,10 @@ public class AuthUserArgumentResolver implements HandlerMethodArgumentResolver {
         String token = ((HttpServletRequest) webRequest.getNativeRequest())
                 .getHeader("Authorization");
 
+        if (token == null || token.isBlank()) {
+            return null;
+        }
+
         // JWT 파싱 → userId 추출
         return jwtUtil.getUserIdFromToken(token);
     }
