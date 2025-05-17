@@ -2,6 +2,7 @@ package com.example.hackathon.domain.activity.dto;
 
 import com.example.hackathon.domain.activity.entity.RepeatCycle;
 import com.example.hackathon.domain.category.entity.Category;
+import com.example.hackathon.domain.category.entity.CategoryType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,7 +21,7 @@ public class ActivityNewRequestDto {
         private String title;
 
         @Schema(description = "활동 카테고리 (생활습관, 이동, 소비, 사회활동)")
-        private Category category;
+        private CategoryType categoryType;
 
         @Schema(description = "활동에 대한 간단한 설명")
         private String description;

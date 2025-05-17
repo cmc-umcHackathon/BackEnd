@@ -5,6 +5,8 @@ import com.example.hackathon.domain.activity.dto.ActivityNewRequestDto;
 import com.example.hackathon.domain.activity.dto.ActivityResponseDto;
 import com.example.hackathon.domain.activity.entity.Activity;
 import com.example.hackathon.domain.activity.repository.ActivityRepository;
+import com.example.hackathon.domain.category.entity.Category;
+import com.example.hackathon.domain.category.repository.CategoryRepository;
 import com.example.hackathon.domain.user.entity.User;
 import com.example.hackathon.domain.user.repository.UserRepository;
 import com.example.hackathon.global.exception.BusinessException;
@@ -19,10 +21,12 @@ public class ActivityService {
 
     private final ActivityRepository activityRepository;
     private final UserRepository userRepository;
+    private final CategoryRepository categoryRepository;
 
-    public ActivityService(ActivityRepository activityRepository, UserRepository userRepository) {
+    public ActivityService(ActivityRepository activityRepository, UserRepository userRepository, CategoryRepository categoryRepository) {
         this.activityRepository = activityRepository;
         this.userRepository = userRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     public List<ActivityResponseDto> getActivitiesByCategoryWithTodayFlags(Long categoryId, List<Long> todayActivityIds) {
@@ -41,10 +45,14 @@ public class ActivityService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new BusinessException(Code.USER_NOT_FOUND));
 
+        Category category = categoryRepository.findByCategoryType(request.getCategoryType())
+                .orElseThrow(() -> new BusinessException(Code.CATEGORY_NOT_FOUND));
+
+
         Activity activity = Activity.builder()
                 .user(user)
                 .title(request.getTitle())
-                .category(request.getCategory())
+                .category(category)
                 .description(request.getDescription())
                 .repeatCycle(request.getRepeatCycle())
                 .build();

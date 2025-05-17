@@ -30,7 +30,7 @@ public class PointService {
     }
 
     @Transactional
-    public void usingPoint(Long userId, PointRequestDTO.buyProductReq req){
+    public void usingPoint(String userId, PointRequestDTO.buyProductReq req){
 
         Point point = pointRepository.findByUserId(userId)
                 .orElseThrow(() -> new BusinessException(Code.POINT_NOT_FOUND));
