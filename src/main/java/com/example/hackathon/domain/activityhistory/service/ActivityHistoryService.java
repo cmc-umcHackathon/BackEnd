@@ -23,6 +23,13 @@ public class ActivityHistoryService {
         return historyRepository.countByUserIdAndAttendStatusTrue(userId);
     }
 
+    public List<ActivityHistoryResponseDto> getAttendedHistoriesByUser(Long userId) {
+        return historyRepository.findByUserIdAndAttendStatusTrueOrderByRegDtDesc(userId).stream()
+                .map(this::toResponseDto)
+                .toList();
+    }
+
+
     public List<Long> getTodayActivityIdsByUser(Long userId) {
         return historyRepository.findTodayAttendedActivityIdsByUser(userId);
     }
