@@ -34,6 +34,10 @@ public class SecurityConfig {
                 // ✅ 경로별 접근 권한 설정
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
+                                "/",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/v3/api-docs/**",
                                 "/auth/**",      // 소셜 로그인 콜백
                                 "/login",        // 혹시 사용할 경우
                                 "/health",       // 헬스 체크

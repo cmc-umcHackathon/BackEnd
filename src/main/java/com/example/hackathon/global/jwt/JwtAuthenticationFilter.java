@@ -39,7 +39,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             if (token != null && jwtUtil.validateToken(token)) {
                 String id = jwtUtil.extractKakaoId(token);
 
-                User user = userRepository.findById(Long.valueOf(id))
+                User user = userRepository.findByKakaoId(Long.valueOf(id))
                         .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다: " + id));
 
                 // 인증 객체 생성 (권한 정보는 생략하거나 필요시 추가)
