@@ -9,10 +9,7 @@ import com.example.hackathon.global.auth.annotation.AuthUser;
 import com.example.hackathon.global.response.Response;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -35,18 +32,26 @@ public class ActivityController {
             @AuthUser String userId,
             @RequestBody ActivityRequestDto requestDto
     ) {
-        return Response.ok(activityParticipationFacade.getAvailableActivities(userId, requestDto.getCategoryId()));
+        return Response.ok(
+                activityParticipationFacade.getAvailableActivities(
+                        userId,
+                        requestDto.getCategoryId()
+                )
+        );
     }
 
     // TODO 오늘의 미션
-//    @GetMapping("/today-mission")
-//    public List<ActivityResponseDto> getTodayMissionActivities(@RequestBody ActivityRequestDto requestDto) {
-//        return activityParticipationFacade.getValidActivitiesByCategory(requestDto);
-//    }
+    @GetMapping("/today-mission")
+    public List<ActivityResponseDto> getTodayMissionActivities(@AuthUser String userId) {
+        return activityParticipationFacade.getAvailableTodayMissionActivities(userId);
+    }
 
     @Operation(summary = "실천 사항 등록 API", description = "유저가 실천 사항을 등록합니다.")
     @PostMapping("/user/activities")
-    public Response<Void> addUserActivities(@AuthUser Long userId, @RequestBody  ActivityNewRequestDto.AddActivity activityRequest) {
+    public Response<Void> addUserActivities(
+            @AuthUser String userId,
+            @RequestBody ActivityNewRequestDto.AddActivity activityRequest
+    ) {
         activityService.addUserActivities(userId, activityRequest);
         return Response.ok();
     }

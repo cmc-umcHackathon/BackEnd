@@ -31,6 +31,11 @@ public class ActivityService {
                 .collect(Collectors.toList());
     }
 
+    public List<ActivityResponseDto> getTodayMissionActivitiesWithTodayFlags(List<Long> todayActivityIds) {
+        return activityRepository.findByIsDisplayedTrueAndIsTodayActivityTrueOrderBySortOrderAsc().stream()
+                .map(activity -> toResponseDto(activity, todayActivityIds.contains(activity.getId())))
+                .collect(Collectors.toList());
+    }
 
     public void addUserActivities(String userId, ActivityNewRequestDto.AddActivity request) {
         User user = userRepository.findById(userId)

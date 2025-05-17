@@ -29,4 +29,14 @@ public class ActivityParticipationFacade {
         return activityService.getActivitiesByCategoryWithTodayFlags(categoryId, doneActivityIds);
     }
 
+    public List<ActivityResponseDto> getAvailableTodayMissionActivities(
+            String userId
+    ) {
+        // 1. 오늘의 활동 이력 ID 목록 조회
+        List<Long> doneActivityIds = historyService.getTodayActivityIdsByUser(userId);
+
+        // 2. 오늘의 활동 전체 중 오늘 이미 한 활동 이력 체크
+        return activityService.getTodayMissionActivitiesWithTodayFlags(doneActivityIds);
+    }
+
 }

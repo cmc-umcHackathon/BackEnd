@@ -1,14 +1,11 @@
 package com.example.hackathon.domain.activity.entity;
 
 import com.example.hackathon.domain.category.entity.Category;
-import com.example.hackathon.domain.category.entity.CategoryType;
 import com.example.hackathon.domain.user.entity.User;
 import com.example.hackathon.global.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "ACTIVITY")
@@ -41,7 +38,6 @@ public class Activity extends BaseEntity {
     @Enumerated(EnumType.STRING) // enum을 문자열로 저장
     @Column(name="CATEGORY_TYPE")
     private RepeatCycle repeatCycle;
-
 
     @Column(name = "IS_DISPLAYED", nullable = false)
     private Boolean isDisplayed;
