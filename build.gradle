@@ -37,8 +37,6 @@ dependencies {
 	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
 	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 
-	// ✅ RestTemplate (이미 spring-web에 포함되어 있음, 별도 설정 필요 없음)
-
 	// DB
 	runtimeOnly 'com.mysql:mysql-connector-j'
 

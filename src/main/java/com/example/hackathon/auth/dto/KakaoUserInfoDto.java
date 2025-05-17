@@ -15,7 +15,6 @@ import java.util.Map;
 public class KakaoUserInfoDto {
 
     private Long id;
-    private String email;
     private String nickname;
 
     @JsonCreator
@@ -24,7 +23,6 @@ public class KakaoUserInfoDto {
             @JsonProperty("kakao_account") Map<String, Object> account
     ) {
         this.id = id;
-        this.email = (String) account.get("email");
 
         Map<String, Object> profile = (Map<String, Object>) account.get("profile");
         this.nickname = profile != null ? (String) profile.get("nickname") : null;

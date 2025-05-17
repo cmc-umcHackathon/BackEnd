@@ -32,7 +32,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         try {
             if (token != null && jwtUtil.validateToken(token)) {
-                String email = jwtUtil.extractEmail(token);
+                String id = jwtUtil.extractKakaoId(token);
 
 //                User user = userRepository.findByEmail(email)
 //                        .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다: " + email));
