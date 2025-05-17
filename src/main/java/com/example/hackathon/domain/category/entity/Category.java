@@ -31,6 +31,11 @@ public class Category extends BaseEntity {
     @Column(name = "UPD_ID", length = 50)
     private String updId;
 
+    @Enumerated(EnumType.STRING) // enum을 문자열로 저장
+    @Column(name="CATEGORY_TYPE")
+    private CategoryType categoryType;
+
+
     // 기본 생성자
     public Category() {}
 
@@ -67,13 +72,6 @@ public class Category extends BaseEntity {
         this.sortOrder = sortOrder;
     }
 
-    public LocalDateTime getRegDt() {
-        return regDt;
-    }
-
-    public void setRegDt(LocalDateTime regDt) {
-        this.regDt = regDt;
-    }
 
     public String getRegId() {
         return regId;
@@ -81,14 +79,6 @@ public class Category extends BaseEntity {
 
     public void setRegId(String regId) {
         this.regId = regId;
-    }
-
-    public LocalDateTime getUpdDt() {
-        return updDt;
-    }
-
-    public void setUpdDt(LocalDateTime updDt) {
-        this.updDt = updDt;
     }
 
     public String getUpdId() {

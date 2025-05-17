@@ -15,7 +15,7 @@ public enum Code implements BaseCode {
     BAD_REQUEST(HttpStatus.BAD_REQUEST, "COMMON400", "잘못된 요청입니다."),
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "COMMON401", "인증이 필요합니다."),
     FORBIDDEN(HttpStatus.FORBIDDEN, "COMMON403", "금지된 요청입니다."),
-    NOT_FOUND(HttpStatus.NOT_FOUND, "COMMON404", "찾을 수 없는 요청입니다.");
+    USER_NOT_FOUND(HttpStatus.NOT_FOUND, "COMMON404", "찾을 수 없는 유저입니다.");
 
 
 

@@ -1,9 +1,8 @@
 package com.example.hackathon.domain.activity.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.example.hackathon.domain.category.entity.CategoryType;
+import com.example.hackathon.global.BaseEntity;
+import jakarta.persistence.*;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -11,11 +10,15 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "ACTIVITY")
 @Getter
-public class Activity {
+public class Activity extends BaseEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID", nullable = false)
     private Long id;
+
+    @Column(name = "TITLE", nullable = false)
+    private String title;
 
     @Column(name = "DESCRIPTION", nullable = false, length = 30)
     private String description;
@@ -29,6 +32,11 @@ public class Activity {
     @Column(name = "CATEGORY_ID", nullable = false)
     private Long categoryId;
 
+    @Enumerated(EnumType.STRING) // enum을 문자열로 저장
+    @Column(name="CATEGORY_TYPE")
+    private RepeatCycle repeatCycle;
+
+
     @Column(name = "IS_DISPLAYED", nullable = false)
     private Boolean isDisplayed;
 
@@ -38,19 +46,11 @@ public class Activity {
     @Column(name = "IS_CUSTOM", nullable = false)
     private Boolean isCustom;
 
-    @Column(name = "REG_DT", nullable = false)
-    private LocalDateTime regDt;
-
     @Column(name = "REG_ID", nullable = false, length = 50)
     private String regId;
 
-    @Column(name = "UPD_DT", nullable = false)
-    private LocalDateTime updDt;
-
     @Column(name = "UPD_ID", length = 50)
     private String updId;
-
-    // Getters, Setters 생략 가능 (Lombok 사용 시 @Data)
 
 
 }
