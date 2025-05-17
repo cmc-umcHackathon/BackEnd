@@ -23,7 +23,7 @@ public class PointController {
 
     @Operation(summary = "보유 포인트 조회", description = "유저가 보유한 총 포인트를 조회합니다.")
     @GetMapping("/user/points")
-    public Response<Integer> getUserPoint(@AuthUser Long userId) {
+    public Response<Integer> getUserPoint(@AuthUser String userId) {
         Integer totalPoint = pointService.getUserTotalPoint(userId);
         return Response.ok(totalPoint);
     }

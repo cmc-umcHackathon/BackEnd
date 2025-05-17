@@ -35,7 +35,7 @@ public class ActivityService {
                 .collect(Collectors.toList());
     }
 
-    public void addUserActivities(Long userId, ActivityNewRequestDto.AddActivity request) {
+    public void addUserActivities(String userId, ActivityNewRequestDto.AddActivity request) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new BusinessException(Code.USER_NOT_FOUND));
 

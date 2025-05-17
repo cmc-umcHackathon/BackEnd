@@ -24,7 +24,10 @@ public class ActivityController {
     private final ActivityParticipationFacade activityParticipationFacade;
     private final ActivityService activityService;
 
-    public ActivityController(ActivityParticipationFacade activityParticipationFacade) {
+    public ActivityController(
+            ActivityParticipationFacade activityParticipationFacade,
+            ActivityService activityService
+    ) {
         this.activityParticipationFacade = activityParticipationFacade;
         this.activityService = activityService;
     }
@@ -46,7 +49,10 @@ public class ActivityController {
 
     @Operation(summary = "실천 사항 등록 API", description = "유저가 실천 사항을 등록합니다.")
     @PostMapping("/user/activities")
-    public Response<Void> addUserActivities(@AuthUser Long userId, @RequestBody  ActivityNewRequestDto.AddActivity activityRequest) {
+    public Response<Void> addUserActivities(
+            @AuthUser String userId,
+            @RequestBody ActivityNewRequestDto.AddActivity activityRequest
+    ) {
         activityService.addUserActivities(userId, activityRequest);
 
         return Response.ok();

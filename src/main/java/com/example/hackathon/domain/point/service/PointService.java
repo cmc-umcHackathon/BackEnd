@@ -15,7 +15,7 @@ public class PointService {
         this.pointRepository = pointRepository;
     }
 
-    public Integer getUserTotalPoint(Long userId) {
+    public Integer getUserTotalPoint(String userId) {
         return pointRepository.findByUserId(userId)
                 .map(Point::getTotalPoint)
                 .orElse(0);       // 포인트 정보가 없는 경우 0 반환
