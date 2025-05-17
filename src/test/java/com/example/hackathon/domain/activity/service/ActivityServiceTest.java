@@ -1,10 +1,13 @@
 package com.example.hackathon.domain.activity.service;
 
-import com.example.hackathon.domain.point.dto.PointRequestDTO;
-import com.example.hackathon.domain.point.entity.Point;
-import com.example.hackathon.domain.point.entity.ProductType;
-import com.example.hackathon.domain.point.repository.PointRepository;
-import com.example.hackathon.domain.point.service.PointService;
+import com.example.hackathon.domain.activity.dto.ActivityNewRequestDto;
+import com.example.hackathon.domain.activity.dto.ActivityResponseDto;
+import com.example.hackathon.domain.activity.entity.Activity;
+import com.example.hackathon.domain.activity.entity.RepeatCycle;
+import com.example.hackathon.domain.activity.repository.ActivityRepository;
+import com.example.hackathon.domain.category.entity.Category;
+import com.example.hackathon.domain.category.entity.CategoryType;
+import com.example.hackathon.domain.category.repository.CategoryRepository;
 import com.example.hackathon.domain.user.entity.User;
 import com.example.hackathon.domain.user.repository.UserRepository;
 import com.example.hackathon.global.exception.BusinessException;
@@ -15,6 +18,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
@@ -25,103 +30,143 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class PointServiceTest {
+class ActivityServiceTest {
 
-    @Mock
-    private PointRepository pointRepository;
-
-    @Mock
-    private UserRepository userRepository;
+    @Mock private ActivityRepository activityRepository;
+    @Mock private UserRepository userRepository;
+    @Mock private CategoryRepository categoryRepository;
 
     @InjectMocks
-    private PointService pointService;
+    private ActivityService activityService;
 
-    @Mock
-    private User user;
-
-    private Point mockPoint;
-
-    Long userId = 1L;
+    private Activity mockActivity;
 
     @BeforeEach
-    void setUp() {
-        mockPoint = new Point();
-        mockPoint.setUser(user);
-        mockPoint.setTotalPoint(500);
+    void setup() {
+        mockActivity = Activity.builder()
+                .id(1L)
+                .description("Test activity")
+                .point(100)
+                .sortOrder(1)
+                .isCustom(false)
+                .build();
     }
 
     @Test
-    @DisplayName("사용자 포인트 조회 - 성공 (500 포인트)")
-    void getUserTotalPoint_success() {
+    @DisplayName("카테고리별 활동 조회 성공")
+    void getActivitiesByCategoryWithTodayFlags_success() {
         // given
-        when(pointRepository.findByUserId(userId)).thenReturn(Optional.of(mockPoint));
+        when(activityRepository.findByCategoryIdAndIsDisplayedTrueOrderBySortOrderAsc(1L))
+                .thenReturn(List.of(mockActivity));
+
+        List<Long> todayIds = List.of(1L);
 
         // when
-        int totalPoint = pointService.getUserTotalPoint(userId);
+        List<ActivityResponseDto> result = activityService.getActivitiesByCategoryWithTodayFlags(1L, todayIds);
 
         // then
-        assertThat(totalPoint).isEqualTo(500);
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).isTodayActivity()).isTrue();
     }
 
     @Test
-    @DisplayName("사용자 포인트 조회 - 정보 없을 경우 0 반환")
-    void getUserTotalPoint_zeroWhenNotExists() {
+    @DisplayName("오늘의 미션 활동 조회 성공")
+    void getTodayMissionActivitiesWithTodayFlags_success() {
         // given
-        when(pointRepository.findByUserId(userId)).thenReturn(Optional.empty());
+        when(activityRepository.findByIsDisplayedTrueAndIsTodayActivityTrueOrderBySortOrderAsc())
+                .thenReturn(List.of(mockActivity));
+
+        List<Long> todayIds = List.of(1L);
 
         // when
-        int totalPoint = pointService.getUserTotalPoint(userId);
+        List<ActivityResponseDto> result = activityService.getTodayMissionActivitiesWithTodayFlags(todayIds);
 
         // then
-        assertThat(totalPoint).isEqualTo(0);
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).isTodayActivity()).isTrue();
     }
 
     @Test
-    @DisplayName("포인트 사용 - 성공")
-    void usingPoint_success() {
+    @DisplayName("단일 활동 조회 - 존재할 경우")
+    void getActivity_exists() {
         // given
-        PointRequestDTO.buyProductReq req = PointRequestDTO.buyProductReq.builder()
-                .productType(ProductType.KEYRING) // 예: KEYRING은 200포인트 필요
+        when(activityRepository.findById(1L)).thenReturn(Optional.of(mockActivity));
+
+        // when
+        ActivityResponseDto result = activityService.getActivity(1L);
+
+        // then
+        assertThat(result).isNotNull();
+        assertThat(result.getId()).isEqualTo(1L);
+    }
+
+    @Test
+    @DisplayName("단일 활동 조회 - 존재하지 않을 경우 null 반환")
+    void getActivity_notExists() {
+        // given
+        when(activityRepository.findById(1L)).thenReturn(Optional.empty());
+
+        // when
+        ActivityResponseDto result = activityService.getActivity(1L);
+
+        // then
+        assertThat(result).isNull();
+    }
+
+    @Test
+    @DisplayName("사용자 활동 추가 성공")
+    void addUserActivities_success() {
+        // given
+        User user = mock(User.class);
+        Category category = mock(Category.class);
+        ActivityNewRequestDto.AddActivity req = ActivityNewRequestDto.AddActivity.builder()
+                .categoryType(CategoryType.CONSUMPTION)
+                .description("설명")
+                .title("제목")
+                .repeatCycle(RepeatCycle.DAILY)
                 .build();
 
-        when(pointRepository.findByUserId(userId)).thenReturn(Optional.of(mockPoint));
+        when(userRepository.findByKakaoId(1L)).thenReturn(Optional.of(user));
+        when(categoryRepository.findByCategoryType(CategoryType.CONSUMPTION)).thenReturn(Optional.of(category));
 
         // when
-        pointService.usingPoint(userId, req);
+        activityService.addUserActivities(1L, req);
 
         // then
-        assertThat(mockPoint.getTotalPoint()).isEqualTo(279); // 500 - 200
+        verify(activityRepository, times(1)).save(any(Activity.class));
     }
 
     @Test
-    @DisplayName("포인트 사용 - 잔여 포인트 부족 시 예외 발생")
-    void usingPoint_notEnoughPoint_throwsException() {
+    @DisplayName("사용자 활동 추가 - 사용자 없음 예외")
+    void addUserActivities_userNotFound() {
         // given
-        PointRequestDTO.buyProductReq req = PointRequestDTO.buyProductReq.builder()
-                .productType(ProductType.KEYRING) // 예: 키링
+        ActivityNewRequestDto.AddActivity req = ActivityNewRequestDto.AddActivity.builder()
+                .categoryType(CategoryType.CONSUMPTION)
                 .build();
 
-        when(pointRepository.findByUserId(userId)).thenReturn(Optional.of(mockPoint));
+        when(userRepository.findByKakaoId(1L)).thenReturn(Optional.empty());
 
         // expect
-        assertThatThrownBy(() -> pointService.usingPoint(userId, req))
+        assertThatThrownBy(() -> activityService.addUserActivities(1L, req))
                 .isInstanceOf(BusinessException.class)
-                .hasMessageContaining(Code.POINT_NOT_ENOUGH.getMessage());
+                .hasMessageContaining(Code.USER_NOT_FOUND.getMessage());
     }
 
     @Test
-    @DisplayName("포인트 사용 - 사용자 포인트 정보가 없을 시 예외 발생")
-    void usingPoint_pointEntityNotFound_throwsException() {
+    @DisplayName("사용자 활동 추가 - 카테고리 없음 예외")
+    void addUserActivities_categoryNotFound() {
         // given
-        PointRequestDTO.buyProductReq req = PointRequestDTO.buyProductReq.builder()
-                .productType(ProductType.KEYRING)
+        User user = mock(User.class);
+        ActivityNewRequestDto.AddActivity req = ActivityNewRequestDto.AddActivity.builder()
+                .categoryType(CategoryType.CONSUMPTION)
                 .build();
 
-        when(pointRepository.findByUserId(userId)).thenReturn(Optional.empty());
+        when(userRepository.findByKakaoId(1L)).thenReturn(Optional.of(user));
+        when(categoryRepository.findByCategoryType(CategoryType.CONSUMPTION)).thenReturn(Optional.empty());
 
         // expect
-        assertThatThrownBy(() -> pointService.usingPoint(userId, req))
+        assertThatThrownBy(() -> activityService.addUserActivities(1L, req))
                 .isInstanceOf(BusinessException.class)
-                .hasMessageContaining(Code.POINT_NOT_FOUND.getMessage());
+                .hasMessageContaining(Code.CATEGORY_NOT_FOUND.getMessage());
     }
 }
