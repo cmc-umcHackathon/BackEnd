@@ -39,24 +39,24 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v2
 
       - name: Docker 이미지 생성
-        run: docker build -t hackathon-server-s3 .
+        run: docker build -t hackathon-server .
 
       - name: Docker 이미지에 Tag 붙이기
-        run: docker tag hackathon-server-s3 ${{ steps.login-ecr.outputs.registry }}/hackathon-ecr
+        run: docker tag hackathon-server ${{ steps.login-ecr.outputs.registry }}/hackathon-server
 
       - name: ECR에 Docker 이미지 Push하기
-        run: docker push ${{ steps.login-ecr.outputs.registry }}/hackathon-server-ecr:latest
+        run: docker push ${{ steps.login-ecr.outputs.registry }}/hackathon-server:latest
 
       - name: 압축하기
         run: tar -czvf $GITHUB_SHA.tar.gz appspec.yml scripts
 
       - name: S3에 프로젝트 폴더 업로드하기
-        run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.tar.gz s3://hackathon-server-s3/$GITHUB_SHA.tar.gz
+        run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.tar.gz s3://hackathon-server-v1/$GITHUB_SHA.tar.gz
 
       - name: Code Deploy를 활용해 EC2에 프로젝트 코드 배포
         run: |
           aws deploy create-deployment \
-            --application-name hackathon-server-code-deploy \
+            --application-name hackathon-server-codedeploy \
             --deployment-config-name CodeDeployDefault.AllAtOnce \
             --deployment-group-name Production \
-            --s3-location bucket=hackathon-server-s3,bundleType=tgz,key=$GITHUB_SHA.tar.gz
+            --s3-location bucket=hackathon-server-v1,bundleType=tgz,key=$GITHUB_SHA.tar.gz
