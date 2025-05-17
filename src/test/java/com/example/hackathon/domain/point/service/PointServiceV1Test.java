@@ -79,14 +79,10 @@ class PointServiceV1Test {
     @DisplayName("포인트 사용 - 성공")
     void usingPoint_success() {
         // given
-        PointRequestDTO.buyProductReq req = PointRequestDTO.buyProductReq.builder()
-                .productType(ProductType.KEYRING) // 예: KEYRING은 200포인트 필요
-                .build();
-
         when(pointRepository.findByUserId(userId)).thenReturn(Optional.of(mockPoint));
 
         // when
-        pointService.usingPoint(userId, req);
+        pointService.updatePointBalance(userId, ProductType.KEYRING.getPoint());
 
         // then
         assertThat(mockPoint.getTotalPoint()).isEqualTo(279); // 500 - 200
@@ -96,14 +92,10 @@ class PointServiceV1Test {
     @DisplayName("포인트 사용 - 잔여 포인트 부족 시 예외 발생")
     void usingPoint_notEnoughPoint_throwsException() {
         // given
-        PointRequestDTO.buyProductReq req = PointRequestDTO.buyProductReq.builder()
-                .productType(ProductType.KEYRING) // 예: 키링
-                .build();
-
         when(pointRepository.findByUserId(userId)).thenReturn(Optional.of(mockPoint));
 
         // expect
-        assertThatThrownBy(() -> pointService.usingPoint(userId, req))
+        assertThatThrownBy(() -> pointService.updatePointBalance(userId, ProductType.KEYRING.getPoint()))
                 .isInstanceOf(BusinessException.class)
                 .hasMessageContaining(Code.POINT_NOT_ENOUGH.getMessage());
     }
@@ -112,14 +104,10 @@ class PointServiceV1Test {
     @DisplayName("포인트 사용 - 사용자 포인트 정보가 없을 시 예외 발생")
     void usingPoint_pointEntityNotFound_throwsException() {
         // given
-        PointRequestDTO.buyProductReq req = PointRequestDTO.buyProductReq.builder()
-                .productType(ProductType.KEYRING)
-                .build();
-
         when(pointRepository.findByUserId(userId)).thenReturn(Optional.empty());
 
         // expect
-        assertThatThrownBy(() -> pointService.usingPoint(userId, req))
+        assertThatThrownBy(() -> pointService.updatePointBalance(userId, ProductType.KEYRING.getPoint()))
                 .isInstanceOf(BusinessException.class)
                 .hasMessageContaining(Code.POINT_NOT_FOUND.getMessage());
     }
