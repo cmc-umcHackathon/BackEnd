@@ -26,7 +26,6 @@ public class ActivityController {
         this.activityService = activityService;
     }
 
-    // TODO 회원정보 추가해서 회원 이력 읽어야 함
     //  @GetMapping("/by-category")
     public Response<List<ActivityResponseDto>> getActivities(
             @AuthUser String userId,
@@ -40,7 +39,6 @@ public class ActivityController {
         );
     }
 
-    // TODO 오늘의 미션
     @GetMapping("/today-mission")
     public List<ActivityResponseDto> getTodayMissionActivities(@AuthUser String userId) {
         return activityParticipationFacade.getAvailableTodayMissionActivities(userId);
