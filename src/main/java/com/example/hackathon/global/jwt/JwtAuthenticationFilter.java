@@ -12,6 +12,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import java.util.List;
+
 
 import java.io.IOException;
 import java.util.Collections;
@@ -27,12 +29,24 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         this.userRepository = userRepository;
     }
 
+    private static final List<String> EXCLUDED_URLS = List.of(
+            "auth/kakao/callback","/api/auth/login/kakao", "/swagger-ui", "/v3/api-docs", "/", "/*", "/**"
+    );
+
+
     @Override
     protected void doFilterInternal(
             HttpServletRequest request,
             HttpServletResponse response,
             FilterChain filterChain
     ) throws ServletException, IOException {
+
+
+        String path = request.getRequestURI();
+        if (isExcluded(path)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         String token = resolveToken(request);
 
@@ -66,6 +80,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return bearer.substring(7);
         }
         return null;
+    }
+
+    private boolean isExcluded(String path) {
+        return EXCLUDED_URLS.stream().anyMatch(path::startsWith);
     }
 }
 
