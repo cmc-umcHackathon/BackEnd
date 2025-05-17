@@ -1,6 +1,6 @@
-package com.example.hackathon.user.entity;
+package com.example.hackathon.domain.user.entity;
 
-import com.example.hackathon.user.enums.OAuthProvider;
+import com.example.hackathon.domain.user.enums.OAuthProvider;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Comment;

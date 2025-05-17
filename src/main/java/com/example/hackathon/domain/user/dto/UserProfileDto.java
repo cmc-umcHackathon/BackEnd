@@ -1,6 +1,6 @@
-package com.example.hackathon.user.dto;
+package com.example.hackathon.domain.user.dto;
 
-import com.example.hackathon.user.entity.User;
+import com.example.hackathon.domain.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

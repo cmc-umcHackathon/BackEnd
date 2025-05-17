@@ -1,6 +1,6 @@
 package com.example.hackathon.auth.dto;
 
-import com.example.hackathon.user.entity.User;
+import com.example.hackathon.domain.user.entity.User;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;

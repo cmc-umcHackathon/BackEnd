@@ -1,4 +1,4 @@
-package com.example.hackathon.mypage.controller;
+package com.example.hackathon.domain.mypage.controller;
 
 
 import com.example.hackathon.common.response.Response;
