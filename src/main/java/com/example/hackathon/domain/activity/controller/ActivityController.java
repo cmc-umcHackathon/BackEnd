@@ -3,13 +3,16 @@ package com.example.hackathon.domain.activity.controller;
 import com.example.hackathon.domain.activity.dto.ActivityNewRequestDto;
 import com.example.hackathon.domain.activity.dto.ActivityRequestDto;
 import com.example.hackathon.domain.activity.dto.ActivityResponseDto;
+import com.example.hackathon.domain.activity.facade.ActivityParticipationFacade;
 import com.example.hackathon.domain.activity.service.ActivityService;
 import com.example.hackathon.global.auth.annotation.AuthUser;
 import com.example.hackathon.global.response.Response;
 import io.swagger.v3.oas.annotations.Operation;
-import jakarta.validation.Valid;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -18,21 +21,28 @@ import java.util.List;
 @Validated
 public class ActivityController {
 
+    private final ActivityParticipationFacade activityParticipationFacade;
     private final ActivityService activityService;
 
-    public ActivityController(ActivityService activityService) {
+    public ActivityController(ActivityParticipationFacade activityParticipationFacade) {
+        this.activityParticipationFacade = activityParticipationFacade;
         this.activityService = activityService;
     }
 
-    @GetMapping("/by-category")
-    public List<ActivityResponseDto> getActivities(@RequestBody ActivityRequestDto requestDto) {
-        return activityService.getValidActivitiesByCategory(requestDto);
+    // TODO 회원정보 추가해서 회원 이력 읽어야 함
+    //  @GetMapping("/by-category")
+    public Response<List<ActivityResponseDto>> getActivities(
+            @AuthUser String userId,
+            @RequestBody ActivityRequestDto requestDto
+    ) {
+        return Response.ok(activityParticipationFacade.getAvailableActivities(userId, requestDto.getCategoryId()));
     }
 
-    @GetMapping("/by-category")
-    public List<ActivityResponseDto> getActivitiesddd(@RequestBody ActivityRequestDto requestDto) {
-        return activityService.getValidActivitiesByCategory(requestDto);
-    }
+    // TODO 오늘의 미션
+//    @GetMapping("/today-mission")
+//    public List<ActivityResponseDto> getTodayMissionActivities(@RequestBody ActivityRequestDto requestDto) {
+//        return activityParticipationFacade.getValidActivitiesByCategory(requestDto);
+//    }
 
     @Operation(summary = "실천 사항 등록 API", description = "유저가 실천 사항을 등록합니다.")
     @PostMapping("/user/activities")

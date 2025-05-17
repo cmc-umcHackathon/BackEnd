@@ -1,16 +1,18 @@
 package com.example.hackathon.domain.activity.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ActivityRequestDto {
+
     private Long categoryId;
-
-    // 기본 생성자 및 Getter/Setter
-    public ActivityRequestDto() {}
-
-    public Long getCategoryId() {
-        return categoryId;
-    }
 
     public void setCategoryId(Long categoryId) {
         this.categoryId = categoryId;
     }
+
 }

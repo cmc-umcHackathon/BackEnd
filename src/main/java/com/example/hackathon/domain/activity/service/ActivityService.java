@@ -2,7 +2,6 @@ package com.example.hackathon.domain.activity.service;
 
 
 import com.example.hackathon.domain.activity.dto.ActivityNewRequestDto;
-import com.example.hackathon.domain.activity.dto.ActivityRequestDto;
 import com.example.hackathon.domain.activity.dto.ActivityResponseDto;
 import com.example.hackathon.domain.activity.entity.Activity;
 import com.example.hackathon.domain.activity.repository.ActivityRepository;
@@ -21,22 +20,15 @@ public class ActivityService {
     private final ActivityRepository activityRepository;
     private final UserRepository userRepository;
 
-    public ActivityService(ActivityRepository activityRepository, UserRepository userRepository) {
+    public ActivityService(ActivityRepository activityRepository) {
         this.activityRepository = activityRepository;
         this.userRepository = userRepository;
     }
 
-    public List<ActivityResponseDto> getValidActivitiesByCategory(ActivityRequestDto requestDto) {
-        return activityRepository.findByCategoryIdAndIsDisplayedTrueOrderBySortOrderAsc(requestDto.getCategoryId())
-                .stream()
-                .map(a -> new ActivityResponseDto(
-                        a.getId(),
-                        a.getDescription(),
-                        a.getPoint(),
-                        a.getSortOrder(),
-                        a.getIsTodayActivity(),
-                        a.getIsCustom()
-                ))
+    public List<ActivityResponseDto> getActivitiesByCategoryExcludingIds(Long categoryId, List<Long> excludedIds) {
+        return activityRepository.findByCategoryIdAndIsDisplayedTrueOrderBySortOrderAsc(categoryId).stream()
+                .filter(a -> !excludedIds.contains(a.getId()))
+                .map(this::toResponseDto)
                 .collect(Collectors.toList());
     }
 
@@ -53,6 +45,18 @@ public class ActivityService {
                 .build();
 
         activityRepository.save(activity);
+    }
+
+
+    private ActivityResponseDto toResponseDto(Activity activity) {
+        return new ActivityResponseDto(
+                activity.getId(),
+                activity.getDescription(),
+                activity.getPoint(),
+                activity.getSortOrder(),
+                activity.getIsTodayActivity(),
+                activity.getIsCustom()
+        );
     }
 
 }

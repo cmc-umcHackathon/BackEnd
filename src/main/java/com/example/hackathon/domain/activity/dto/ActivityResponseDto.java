@@ -9,8 +9,9 @@ public class ActivityResponseDto {
     private String description;
     private int point;
     private int sortOrder;
-    private boolean isTodayActivity;
     private boolean isCustom;
+
+    private boolean isTodayActivity;
 
     public ActivityResponseDto(
             Long id,
