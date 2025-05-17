@@ -42,8 +42,11 @@ public class ActivityController {
 
     @Operation(summary = "현재 유효한 오늘의 미션조회 API", description = "현재 고객의 이력에 기반한 오늘의 미션 정보를 조회합니다.")
     @GetMapping("/today-mission")
-    public List<ActivityResponseDto> getTodayMissionActivities(@AuthUser Long userId) {
-        return activityParticipationFacade.getAvailableTodayMissionActivities(userId);
+    public Response<List<ActivityResponseDto>> getTodayMissionActivities(@AuthUser Long userId) {
+
+        return Response.ok(
+                activityParticipationFacade.getAvailableTodayMissionActivities(userId)
+        );
     }
 
     @PostMapping("/user/activities")

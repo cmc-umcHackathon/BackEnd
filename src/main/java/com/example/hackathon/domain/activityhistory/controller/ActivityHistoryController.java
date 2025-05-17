@@ -26,8 +26,7 @@ public class ActivityHistoryController {
     @Operation(summary = "활동 참여 이력 횟수 조회 API", description = "현재 고객의 활동 참여 횟수를 조회합니다.")
     @GetMapping("/")
     public Response<Long> getTotalActivityHistoryCount(@AuthUser Long userId) {
-        long totalActivityHistoryCount = activityHistoryService.getTotalActivityHistoryCount(userId);
-        return Response.ok(totalActivityHistoryCount);
+        return Response.ok(activityHistoryService.getTotalActivityHistoryCount(userId));
     }
 
     @Operation(summary = "활동 참여 이력 저장 API", description = "현재 고객의 활동 참여 이력을 저장합니다.")
