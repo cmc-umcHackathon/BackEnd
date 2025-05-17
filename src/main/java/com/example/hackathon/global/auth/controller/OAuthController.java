@@ -29,4 +29,3 @@ public class OAuthController {
         return Response.ok(jwtToken);
     }
 }
-
