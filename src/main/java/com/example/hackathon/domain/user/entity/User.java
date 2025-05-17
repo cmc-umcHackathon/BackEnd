@@ -26,23 +26,22 @@ public class User extends BaseEntity {
     @Comment("회원 고유값")
     private Long id;
 
+    @Column(name = "KAKAO_ID", unique = true, nullable = false)
+    @Comment("카카오 ID")
+    private Long kakaoId;
+
     @Column(name = "NAME", nullable = false, length = 50)
     @Comment("이름")
     private String name;
-
-    @Column(name = "email", nullable = false, unique = true)
-    private String email;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "PROVIDER", nullable = false, length = 10)
     @Comment("소셜 로그인 제공자")
     private OAuthProvider oauthProvider;
 
-
     @Column(name = "REG_ID", nullable = false, length = 50)
     @Comment("등록자")
     private String regId;
-
 
     @Column(name = "UPD_ID", length = 50)
     @Comment("수정자")

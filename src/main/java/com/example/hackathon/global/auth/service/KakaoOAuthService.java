@@ -38,11 +38,11 @@ public class KakaoOAuthService implements OAuthService {
         log.info("userInfo : {}", userInfo);
 
         // 3. 회원 조회 또는 저장
-        User user = userRepository.findById(userInfo.getId())
+        User user = userRepository.findByKakaoId(userInfo.getId())
                 .orElseGet(() -> userRepository.save(userInfo.toEntity()));
 
         // 4. JWT 토큰 발급
-        return jwtUtil.generateToken(user.getId());
+        return jwtUtil.generateToken(user.getKakaoId());
     }
 }
 

@@ -33,9 +33,10 @@ public class KakaoUserInfoDto {
 
     public User toEntity() {
         return User.builder()
-                .id(id)
+                .kakaoId(id)
                 .name(name)
                 .oauthProvider(KAKAO)
+                .regId(String.valueOf(id))
                 .build();
     }
 }

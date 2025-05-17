@@ -4,13 +4,13 @@ spring:
   server:
     port: 8080
   datasource:
-    url: jdbc:mysql://${DEFAULT_URL}?serverTimezone=UTC
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    url: jdbc:mysql://${PROD_DB_ENDPOINT}:3306/${PROD_DB_NAME}?serverTimezone=UTC
+    username: ${PROD_DB_USERNAME}
+    password: ${PROD_DB_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect

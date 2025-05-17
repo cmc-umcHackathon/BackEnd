@@ -7,12 +7,13 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class UserProfileDto {
-    private Long id;
+
+    private Long kakaoId;
     private String nickname;
     private String role;
 
     public UserProfileDto(User user) {
-        this.id = user.getId();
+        this.kakaoId = user.getKakaoId();
         this.nickname = user.getName();
     }
 }
