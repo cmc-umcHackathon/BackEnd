@@ -1,14 +1,11 @@
 package com.example.hackathon.domain.product.controller;
 
-import com.example.hackathon.domain.product.dto.ProductRequestDto;
 import com.example.hackathon.domain.product.dto.ProductResponseDto;
 import com.example.hackathon.domain.product.service.ProductService;
-import com.example.hackathon.global.auth.annotation.AuthUser;
 import com.example.hackathon.global.response.Response;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

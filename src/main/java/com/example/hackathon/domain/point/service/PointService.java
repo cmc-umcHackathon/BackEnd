@@ -29,16 +29,27 @@ public class PointService {
     }
 
     @Transactional
-    public void usingPoint(Long userId, PointRequestDTO.buyProductReq req){
+    public void updatePointBalance(Long userId, int pointDelta) {
 
-        Point point = pointRepository.findByUserId(userId)
-                .orElseThrow(() -> new BusinessException(Code.POINT_NOT_FOUND, "이미 오늘 참여한 활동입니다."));
+        Point userPoint = pointRepository.findByUserId(userId).orElse(null);
 
-        int productPrice = req.getProductType().getPoint();
-        int userPoints = point.getTotalPoint();
+        if (userPoint == null) {
+            if (pointDelta < 0) {
+                throw new BusinessException(Code.BAD_REQUEST);
+            }
 
-        if (userPoints < productPrice) { throw new BusinessException(Code.POINT_NOT_ENOUGH, "이미 오늘 참여한 활동입니다.");}
-
-        point.setTotalPoint(userPoints - productPrice);
+            pointRepository.save(
+                    Point.builder()
+                            .user(userRepository.findById(userId)
+                                    .orElseThrow(() -> new BusinessException(Code.BAD_REQUEST)))
+                            .totalPoint(pointDelta)
+                    .build()
+            );
+        } else {
+            int userPoints = userPoint.getTotalPoint();
+            
+            userPoint.setTotalPoint(userPoints + pointDelta);
+        }
     }
+
 }

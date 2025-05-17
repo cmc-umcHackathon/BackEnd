@@ -47,7 +47,10 @@ public class ActivityService {
     public ActivityResponseDto getActivity(Long activityId) {
         return activityRepository.findById(activityId)
                 .map(this::toResponseDto)
-                .orElse(null);
+                .orElseThrow(() -> new BusinessException(
+                        Code.BAD_REQUEST,
+                        "유효하지 않은 활동 ID 입니다.")
+                );
     }
 
     public void addUserActivities(

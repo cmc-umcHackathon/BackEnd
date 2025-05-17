@@ -10,6 +10,9 @@ import lombok.*;
 @Entity
 @Getter
 @Table(name = "Point")
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Point extends BaseEntity {
 
     @Id
