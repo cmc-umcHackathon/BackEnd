@@ -45,10 +45,10 @@ public class SecurityConfig {
                                 "/docs/**"
                         ).permitAll()
                         .anyRequest().authenticated()
-                )
+                );
 
                 // ✅ 기타 설정 (필요 시 추가)
-                .httpBasic(Customizer.withDefaults());
+                //.httpBasic(Customizer.withDefaults());
 
         // ✅ JWT 인증 필터 적용
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
