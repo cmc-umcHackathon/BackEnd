@@ -1,12 +1,9 @@
 package com.example.hackathon.domain.category.entity;
 
-import com.example.hackathon.domain.activity.entity.Activity;
 import com.example.hackathon.global.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.ToString;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Getter

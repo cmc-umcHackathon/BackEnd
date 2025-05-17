@@ -49,13 +49,13 @@ public class ActivityController {
         );
     }
 
-    @Operation(summary = "유저의 활동 내역을 추가하는 API", description = "유저의 활동 내역을 추가합니다.")
-    @PostMapping("/user/activities")
-    public Response<Void> addUserActivities(
-            @AuthUser Long userId,
-            @RequestBody ActivityNewRequestDto.AddActivity activityRequest
-    ) {
-        activityService.addUserActivities(userId, activityRequest);
-        return Response.ok();
-    }
+//    @Operation(summary = "유저의 활동 내역을 추가하는 API", description = "유저의 활동 내역을 추가합니다.")
+//    @PostMapping("/user/activities")
+//    public Response<Void> addUserActivities(
+//            @AuthUser Long userId,
+//            @RequestBody ActivityNewRequestDto.AddActivity activityRequest
+//    ) {
+//        activityService.addUserActivities(userId, activityRequest);
+//        return Response.ok();
+//    }
 }
