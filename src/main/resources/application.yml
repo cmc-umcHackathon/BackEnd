@@ -1,21 +1,30 @@
 spring:
+  application:
+    name: hackathon
+  server:
+    port: 8080
   datasource:
-    url: jdbc:mysql://hackthon-server-db-v.cwmf5niftwns.ap-northeast-2.rds.amazonaws.com:3306/hackthon_db?serverTimezone=Asia/Seoul
-    username: admin
-    password: hackthon
+    url: jdbc:mysql://${DEFAULT_URL}?serverTimezone=UTC
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
-
   jpa:
     hibernate:
       ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
-    show-sql: true
-    open-in-view: false
+        format_sql: true
+    show_sql: true
+springdoc:
+  use-fqn: true
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+  cache:
+    disabled: true
 
-server:
-  port: 8080
 
 oauth:
   kakao:
