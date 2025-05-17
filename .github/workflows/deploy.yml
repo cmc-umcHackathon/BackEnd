@@ -42,10 +42,10 @@ jobs:
         run: docker build -t hackathon-server-s3 .
 
       - name: Docker 이미지에 Tag 붙이기
-        run: docker tag hackathon-server-s3 ${{ steps.login-ecr.outputs.registry }}/hackathon-server-s3
+        run: docker tag hackathon-server-s3 ${{ steps.login-ecr.outputs.registry }}/hackathon-ecr
 
       - name: ECR에 Docker 이미지 Push하기
-        run: docker push ${{ steps.login-ecr.outputs.registry }}/hackathon-server-s3:latest
+        run: docker push ${{ steps.login-ecr.outputs.registry }}/hackathon-server-ecr:latest
 
       - name: 압축하기
         run: tar -czvf $GITHUB_SHA.tar.gz appspec.yml scripts
