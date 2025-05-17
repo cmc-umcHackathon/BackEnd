@@ -1,6 +1,24 @@
 spring:
   application:
     name: hackathon
+  server:
+    port: 8080
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
+    show_sql: true
+springdoc:
+  use-fqn: true
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+  cache:
+    disabled: true
 
 
 oauth:
