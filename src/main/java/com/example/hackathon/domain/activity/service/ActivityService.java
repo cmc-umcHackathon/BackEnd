@@ -20,7 +20,10 @@ public class ActivityService {
     private final ActivityRepository activityRepository;
     private final UserRepository userRepository;
 
-    public ActivityService(ActivityRepository activityRepository) {
+    public ActivityService(
+            ActivityRepository activityRepository,
+            UserRepository userRepository
+    ) {
         this.activityRepository = activityRepository;
         this.userRepository = userRepository;
     }
