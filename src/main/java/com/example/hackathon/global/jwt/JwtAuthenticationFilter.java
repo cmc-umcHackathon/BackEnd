@@ -29,7 +29,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private static final List<String> EXCLUDED_URLS = List.of(
-            "auth/kakao/callback","/api/auth/login/kakao", "/swagger-ui", "/v3/api-docs", "/", "/*"
+            "auth/kakao/callback","/api/auth/login/kakao", "/swagger-ui", "/v3/api-docs", "/", "/*", "/**"
     );
 
 
