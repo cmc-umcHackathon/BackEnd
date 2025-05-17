@@ -56,6 +56,6 @@ public class ProductPurchaseFacade {
 
         productPurchaseHistoryService.purchase(history);
 
-//        pointService.usingPoint();
+        pointService.updatePointBalance(userId, product.price());
     }
 }
