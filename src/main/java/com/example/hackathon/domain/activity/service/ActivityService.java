@@ -41,13 +41,18 @@ public class ActivityService {
                 .collect(Collectors.toList());
     }
 
-    public void addUserActivities(String userId, ActivityNewRequestDto.AddActivity request) {
+    public ActivityResponseDto getActivity(Long activityId) {
+        return activityRepository.findById(activityId)
+                .map(this::toResponseDto)
+                .orElse(null);
+    }
+
+    public void addUserActivities(Long userId, ActivityNewRequestDto.AddActivity request) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new BusinessException(Code.USER_NOT_FOUND));
+                .orElseThrow(() -> new BusinessException(Code.USER_NOT_FOUND, "이미 오늘 참여한 활동입니다."));
 
         Category category = categoryRepository.findByCategoryType(request.getCategoryType())
                 .orElseThrow(() -> new BusinessException(Code.CATEGORY_NOT_FOUND));
-
 
         Activity activity = Activity.builder()
                 .user(user)
@@ -58,6 +63,17 @@ public class ActivityService {
                 .build();
 
         activityRepository.save(activity);
+    }
+
+
+    private ActivityResponseDto toResponseDto(Activity activity) {
+        return new ActivityResponseDto(
+                activity.getId(),
+                activity.getDescription(),
+                activity.getPoint(),
+                activity.getSortOrder(),
+                activity.getIsCustom()
+        );
     }
 
     private ActivityResponseDto toResponseDto(Activity activity, boolean isTodayActivity) {
