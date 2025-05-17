@@ -25,7 +25,7 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @Operation(summary = "상품 조회 API", description = "포인트로 구매가 가능한 상품을 조회합니다.")
+    @Operation(summary = "상품 조회 API", description = "포인트로 구매 가능한 상품을 조회합니다.")
     @GetMapping
     public Response<List<ProductResponseDto>> getAvailableProducts() {
         return Response.ok(productService.getAvailableProducts());
