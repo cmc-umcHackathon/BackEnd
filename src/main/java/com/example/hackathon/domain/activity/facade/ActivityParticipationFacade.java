@@ -25,8 +25,8 @@ public class ActivityParticipationFacade {
         // 1. 오늘의 활동 이력 ID 목록 조회
         List<Long> doneActivityIds = historyService.getTodayActivityIdsByUser(userId);
 
-        // 2. 활동 전체 중 오늘 이미 한 활동 제외
-        return activityService.getActivitiesByCategoryExcludingIds(categoryId, doneActivityIds);
+        // 2. 활동 전체 중 오늘 이미 한 활동 이력 체크
+        return activityService.getActivitiesByCategoryWithTodayFlags(categoryId, doneActivityIds);
     }
 
 }

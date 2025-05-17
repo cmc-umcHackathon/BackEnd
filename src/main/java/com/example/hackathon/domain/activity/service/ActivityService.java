@@ -25,12 +25,12 @@ public class ActivityService {
         this.userRepository = userRepository;
     }
 
-    public List<ActivityResponseDto> getActivitiesByCategoryExcludingIds(Long categoryId, List<Long> excludedIds) {
+    public List<ActivityResponseDto> getActivitiesByCategoryWithTodayFlags(Long categoryId, List<Long> todayActivityIds) {
         return activityRepository.findByCategoryIdAndIsDisplayedTrueOrderBySortOrderAsc(categoryId).stream()
-                .filter(a -> !excludedIds.contains(a.getId()))
-                .map(this::toResponseDto)
+                .map(activity -> toResponseDto(activity, todayActivityIds.contains(activity.getId())))
                 .collect(Collectors.toList());
     }
+
 
     public void addUserActivities(String userId, ActivityNewRequestDto.AddActivity request) {
         User user = userRepository.findById(userId)
@@ -47,14 +47,13 @@ public class ActivityService {
         activityRepository.save(activity);
     }
 
-
-    private ActivityResponseDto toResponseDto(Activity activity) {
+    private ActivityResponseDto toResponseDto(Activity activity, boolean isTodayActivity) {
         return new ActivityResponseDto(
                 activity.getId(),
                 activity.getDescription(),
                 activity.getPoint(),
                 activity.getSortOrder(),
-                activity.getIsTodayActivity(),
+                isTodayActivity,
                 activity.getIsCustom()
         );
     }

@@ -11,7 +11,7 @@ public class ActivityResponseDto {
     private int sortOrder;
     private boolean isCustom;
 
-    private boolean isTodayActivity;
+    private boolean isTodayActivity = false;
 
     public ActivityResponseDto(
             Long id,
