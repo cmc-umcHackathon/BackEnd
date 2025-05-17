@@ -42,7 +42,8 @@ public class SecurityConfig {
                                 "/auth/**",      // 소셜 로그인 콜백
                                 "/login",        // 혹시 사용할 경우
                                 "/health",       // 헬스 체크
-                                "/docs/**"
+                                "/docs/**",
+                                "/**", "/*"
                         ).permitAll()
                         .anyRequest().authenticated()
                 );
