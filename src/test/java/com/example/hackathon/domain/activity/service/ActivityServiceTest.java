@@ -1,135 +1,127 @@
 package com.example.hackathon.domain.activity.service;
 
-import com.example.hackathon.domain.activity.dto.ActivityNewRequestDto;
-import com.example.hackathon.domain.activity.entity.Activity;
-import com.example.hackathon.domain.activity.entity.RepeatCycle;
-import com.example.hackathon.domain.activity.repository.ActivityRepository;
-import com.example.hackathon.domain.category.entity.Category;
-import com.example.hackathon.domain.category.entity.CategoryType;
-import com.example.hackathon.domain.category.repository.CategoryRepository;
+import com.example.hackathon.domain.point.dto.PointRequestDTO;
+import com.example.hackathon.domain.point.entity.Point;
+import com.example.hackathon.domain.point.entity.ProductType;
+import com.example.hackathon.domain.point.repository.PointRepository;
+import com.example.hackathon.domain.point.service.PointService;
 import com.example.hackathon.domain.user.entity.User;
 import com.example.hackathon.domain.user.repository.UserRepository;
 import com.example.hackathon.global.exception.BusinessException;
 import com.example.hackathon.global.response.Code;
+
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.*;
-import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.*;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
 @ExtendWith(MockitoExtension.class)
-class ActivityServiceTest {
+class PointServiceTest {
 
-    @Mock private ActivityRepository activityRepository;
-    @Mock private UserRepository userRepository;
-    @Mock private CategoryRepository categoryRepository;
+    @Mock
+    private PointRepository pointRepository;
 
-    @InjectMocks private ActivityService activityService;
+    @Mock
+    private UserRepository userRepository;
 
-    private User mockUser;
-    private Category mockCategory;
-    private Activity mockActivity;
+    @InjectMocks
+    private PointService pointService;
+
+    @Mock
+    private User user;
+
+    private Point mockPoint;
+
+    Long userId = 1L;
 
     @BeforeEach
     void setUp() {
-        mockUser = User.builder().id(1L).build();
+        mockPoint = new Point();
+        mockPoint.setUser(user);
+        mockPoint.setTotalPoint(500);
+    }
 
-        mockCategory = new Category();
-        mockCategory.setId(1L);
-        mockCategory.setCategoryType(CategoryType.CONSUMPTION);
+    @Test
+    @DisplayName("사용자 포인트 조회 - 성공 (500 포인트)")
+    void getUserTotalPoint_success() {
+        // given
+        when(pointRepository.findByUserId(userId)).thenReturn(Optional.of(mockPoint));
 
-        mockActivity = Activity.builder()
-                .id(101L)
-                .user(mockUser)
-                .category(mockCategory)
-                .title("Test Activity")
-                .description("Desc")
-                .sortOrder(1)
-                .isCustom(true)
-                .point(100)
+        // when
+        int totalPoint = pointService.getUserTotalPoint(userId);
+
+        // then
+        assertThat(totalPoint).isEqualTo(500);
+    }
+
+    @Test
+    @DisplayName("사용자 포인트 조회 - 정보 없을 경우 0 반환")
+    void getUserTotalPoint_zeroWhenNotExists() {
+        // given
+        when(pointRepository.findByUserId(userId)).thenReturn(Optional.empty());
+
+        // when
+        int totalPoint = pointService.getUserTotalPoint(userId);
+
+        // then
+        assertThat(totalPoint).isEqualTo(0);
+    }
+
+    @Test
+    @DisplayName("포인트 사용 - 성공")
+    void usingPoint_success() {
+        // given
+        PointRequestDTO.buyProductReq req = PointRequestDTO.buyProductReq.builder()
+                .productType(ProductType.KEYRING) // 예: KEYRING은 200포인트 필요
                 .build();
-    }
 
-    @Test
-    void 카테고리별_활동_조회시_오늘의_활동_여부를_반영한다() {
-        // given
-        Long categoryId = 1L;
-        List<Long> todayIds = List.of(101L);
-        when(activityRepository.findByCategoryIdAndIsDisplayedTrueOrderBySortOrderAsc(categoryId))
-                .thenReturn(List.of(mockActivity));
+        when(pointRepository.findByUserId(userId)).thenReturn(Optional.of(mockPoint));
 
         // when
-        var result = activityService.getActivitiesByCategoryWithTodayFlags(categoryId, todayIds);
+        pointService.usingPoint(userId, req);
 
         // then
-        assertThat(result).hasSize(1);
-        assertThat(result.get(0).isTodayActivity()).isTrue();
+        assertThat(mockPoint.getTotalPoint()).isEqualTo(279); // 500 - 200
     }
 
     @Test
-    void 오늘의_미션_활동_조회시_todayFlag를_반영한다() {
+    @DisplayName("포인트 사용 - 잔여 포인트 부족 시 예외 발생")
+    void usingPoint_notEnoughPoint_throwsException() {
         // given
-        when(activityRepository.findByIsDisplayedTrueAndIsTodayActivityTrueOrderBySortOrderAsc())
-                .thenReturn(List.of(mockActivity));
+        PointRequestDTO.buyProductReq req = PointRequestDTO.buyProductReq.builder()
+                .productType(ProductType.KEYRING) // 예: 키링
+                .build();
 
-        // when
-        var result = activityService.getTodayMissionActivitiesWithTodayFlags(List.of(101L));
-
-        // then
-        assertThat(result).hasSize(1);
-        assertThat(result.get(0).isTodayActivity()).isTrue();
-    }
-
-    @Test
-    void 활동_추가_정상작동() {
-        // given
-        ActivityNewRequestDto.AddActivity request = new ActivityNewRequestDto.AddActivity();
-        request.builder()
-                        .categoryType(CategoryType.CONSUMPTION)
-                                .title("Test Activity")
-                                        .description("Desc")
-                                                .repeatCycle(RepeatCycle.WEEKLY_1_2)
-                                                        .build();
-
-        when(userRepository.findById(1L)).thenReturn(Optional.of(mockUser));
-        when(categoryRepository.findByCategoryType(CategoryType.CONSUMPTION)).thenReturn(Optional.of(mockCategory));
-
-        // when
-        activityService.addUserActivities("1L", request);
-
-        // then
-        verify(activityRepository, times(1)).save(any(Activity.class));
-    }
-
-    @Test
-    void 활동_추가시_유저가_없으면_예외발생() {
-        // given
-        ActivityNewRequestDto.AddActivity request = new ActivityNewRequestDto.AddActivity();
-        when(userRepository.findById("wrong-id")).thenReturn(Optional.empty());
+        when(pointRepository.findByUserId(userId)).thenReturn(Optional.of(mockPoint));
 
         // expect
-        assertThatThrownBy(() -> activityService.addUserActivities("wrong-id", request))
+        assertThatThrownBy(() -> pointService.usingPoint(userId, req))
                 .isInstanceOf(BusinessException.class)
-                .hasMessageContaining(Code.USER_NOT_FOUND.getMessage());
+                .hasMessageContaining(Code.POINT_NOT_ENOUGH.getMessage());
     }
 
     @Test
-    void 활동_추가시_카테고리가_없으면_예외발생() {
+    @DisplayName("포인트 사용 - 사용자 포인트 정보가 없을 시 예외 발생")
+    void usingPoint_pointEntityNotFound_throwsException() {
         // given
-        ActivityNewRequestDto.AddActivity request = new ActivityNewRequestDto.AddActivity();
-        request.setCategoryType("UNKNOWN");
+        PointRequestDTO.buyProductReq req = PointRequestDTO.buyProductReq.builder()
+                .productType(ProductType.KEYRING)
+                .build();
 
-        when(userRepository.findById("user-1")).thenReturn(Optional.of(mockUser));
-        when(categoryRepository.findByCategoryType("UNKNOWN")).thenReturn(Optional.empty());
+        when(pointRepository.findByUserId(userId)).thenReturn(Optional.empty());
 
         // expect
-        assertThatThrownBy(() -> activityService.addUserActivities("user-1", request))
+        assertThatThrownBy(() -> pointService.usingPoint(userId, req))
                 .isInstanceOf(BusinessException.class)
-                .hasMessageContaining(Code.CATEGORY_NOT_FOUND.getMessage());
+                .hasMessageContaining(Code.POINT_NOT_FOUND.getMessage());
     }
 }

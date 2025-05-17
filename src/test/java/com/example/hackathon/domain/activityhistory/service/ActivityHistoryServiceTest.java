@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -24,27 +25,30 @@ class ActivityHistoryServiceTest {
     @InjectMocks
     private ActivityHistoryService activityHistoryService;
 
-    private String userId;
+    private Long userId;
     private LocalDate today;
+    Long activityId;
 
     @BeforeEach
     void setUp() {
-        userId = "1";
+        userId = 10L;
+        activityId = 2L;
         today = LocalDate.now();
+
     }
 
     @Test
-    void 사용자의_오늘_출석한_활동ID를_조회한다() {
+    @DisplayName("사용자의_오늘_출석한_활동ID를_조회한다")
+    void getTodayActivityIdsByUser() {
         // given
         List<Long> expectedActivityIds = Arrays.asList(101L, 102L, 103L);
-        when(activityHistoryRepository.findTodayActivityIdsByUser(userId, today))
-                .thenReturn(expectedActivityIds);
+        when(activityHistoryRepository.findTopByUserIdAndActivityIdAndTodayOrderByRegDtDesc(userId, activityId, today));
 
         // when
         List<Long> actualActivityIds = activityHistoryService.getTodayActivityIdsByUser(userId);
 
         // then
         assertThat(actualActivityIds).isEqualTo(expectedActivityIds);
-        verify(activityHistoryRepository, times(1)).findTodayActivityIdsByUser(userId, today);
+        verify(activityHistoryRepository, times(1)).findTopByUserIdAndActivityIdAndTodayOrderByRegDtDesc(userId,activityId, today);
     }
 }
