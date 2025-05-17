@@ -28,9 +28,9 @@ public class CategoryController {
         return Response.ok(categoryService.getAllCategories());
     }
 
-    @Operation(summary = "특정 상위 카테고리 하위 조회 API", description = "특정 카테고리의 하위 카테고리를 조회합니다.")
-    @GetMapping("/parent/{parentCode}")
-    public Response<List<CategoryResponseDto>> getCategoriesByParentCode(@AuthUser String parentCode) {
-        return Response.ok(categoryService.getCategoriesByParentCode(parentCode));
-    }
+//    @Operation(summary = "특정 상위 카테고리 하위 조회 API", description = "특정 카테고리의 하위 카테고리를 조회합니다.")
+//    @GetMapping("/parent/{parentCode}")
+//    public Response<List<CategoryResponseDto>> getCategoriesByParentCode(@AuthUser String parentCode) {
+//        return Response.ok(categoryService.getCategoriesByParentCode(parentCode));
+//    }
 }

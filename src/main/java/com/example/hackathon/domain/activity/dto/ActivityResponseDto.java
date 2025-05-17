@@ -1,8 +1,12 @@
 package com.example.hackathon.domain.activity.dto;
 
-import lombok.Getter;
+import lombok.*;
 
 @Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class ActivityResponseDto {
 
     private Long id;
@@ -14,26 +18,6 @@ public class ActivityResponseDto {
     private boolean isCustom;
 
     private boolean isTodayActivity = false;
-
-    public ActivityResponseDto(
-            Long id,
-            String title,
-            String subtitle,
-            String description,
-            int point,
-            int sortOrder,
-            boolean isTodayActivity,
-            boolean isCustom
-    ) {
-        this.id = id;
-        this.title = title;
-        this.subtitle = subtitle;
-        this.description = description;
-        this.point = point;
-        this.sortOrder = sortOrder;
-        this.isTodayActivity = isTodayActivity;
-        this.isCustom = isCustom;
-    }
 
     public ActivityResponseDto(
             Long id,

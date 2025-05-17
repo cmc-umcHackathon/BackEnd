@@ -16,6 +16,7 @@ import java.util.List;
 
 
 import java.io.IOException;
+import java.util.Collections;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -61,7 +62,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         new UsernamePasswordAuthenticationToken(
                                 user,
                                 null,
-                                null
+                                Collections.emptyList()  // ✅ 반드시 authorities 포함
                         );
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
