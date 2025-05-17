@@ -1,0 +1,41 @@
+package com.example.hackathon.auth.dto;
+
+import com.example.hackathon.user.entity.User;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+import java.util.Map;
+
+@Getter
+@NoArgsConstructor
+@ToString
+public class KakaoUserInfoDto {
+
+    private Long id;
+    private String email;
+    private String nickname;
+
+    @JsonCreator
+    public KakaoUserInfoDto(
+            @JsonProperty("id") Long id,
+            @JsonProperty("kakao_account") Map<String, Object> account
+    ) {
+        this.id = id;
+        this.email = (String) account.get("email");
+
+        Map<String, Object> profile = (Map<String, Object>) account.get("profile");
+        this.nickname = profile != null ? (String) profile.get("nickname") : null;
+    }
+
+    public User toEntity() {
+        return User.builder()
+                .id(id)
+                .nickname(nickname)
+                .oauthProvider("kakao")
+                .build();
+    }
+}
+

@@ -1,0 +1,26 @@
+package com.example.hackathon.user.entity;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import lombok.*;
+
+@Entity
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
+public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String nickname;
+
+    private String oauthProvider; // ex: "kakao", "google"
+
+    private String role; // ex: "USER", "ADMIN"
+}
+

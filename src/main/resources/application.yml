@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: hackathon
+
+
+oauth:
+  kakao:
+    client-id: 4870a2ee1639568628ea3e9351ab0155
+    redirect-uri: http://localhost:8080/auth/kakao/callback
+
+jwt:
+  secret: Lun7qvfZd1o6UvvdpE9eKB/qkDZzdTYwNI9TMIoj0iI=
+  expiration: 3600000 # ?
