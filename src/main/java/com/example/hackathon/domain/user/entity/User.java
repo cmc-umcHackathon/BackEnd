@@ -1,6 +1,7 @@
 package com.example.hackathon.domain.user.entity;
 
 import com.example.hackathon.domain.user.enums.OAuthProvider;
+import com.example.hackathon.global.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Comment;
@@ -17,7 +18,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @EntityListeners(AuditingEntityListener.class)
-public class User {
+public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,24 +30,19 @@ public class User {
     @Comment("이름")
     private String name;
 
+    @Column(name = "email", nullable = false, unique = true)
+    private String email;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "PROVIDER", nullable = false, length = 10)
     @Comment("소셜 로그인 제공자")
     private OAuthProvider oauthProvider;
 
-    @CreatedDate
-    @Column(name = "REG_DT", nullable = false)
-    @Comment("등록일")
-    private LocalDateTime regDt;
 
     @Column(name = "REG_ID", nullable = false, length = 50)
     @Comment("등록자")
     private String regId;
 
-    @LastModifiedDate
-    @Column(name = "UPD_DT", nullable = false)
-    @Comment("수정일")
-    private LocalDateTime updDt;
 
     @Column(name = "UPD_ID", length = 50)
     @Comment("수정자")

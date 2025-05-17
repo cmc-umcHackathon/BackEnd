@@ -1,7 +1,8 @@
 package com.example.hackathon.domain.activityhistory.controller;
 
 import com.example.hackathon.domain.activityhistory.dto.ActivityHistoryRequestDto;
-import com.example.hackathon.domain.activityhistory.dto.ActivityHistoryResponseDto;
+import com.example.hackathon.domain.activityhistory.dto.ActivityHistoryWithActivityDto;
+import com.example.hackathon.domain.activityhistory.facade.ActivityHistoryReadFacade;
 import com.example.hackathon.domain.activityhistory.facade.ActivityPointGrantFacade;
 import com.example.hackathon.domain.activityhistory.service.ActivityHistoryService;
 import com.example.hackathon.global.auth.annotation.AuthUser;
@@ -16,13 +17,15 @@ import java.util.List;
 public class ActivityHistoryController {
 
     private final ActivityPointGrantFacade activityPointGrantFacade;
+    private final ActivityHistoryReadFacade activityHistoryReadFacade;
     private final ActivityHistoryService activityHistoryService;
 
     public ActivityHistoryController(
             ActivityPointGrantFacade activityPointGrantFacade,
-            ActivityHistoryService activityHistoryService
+            ActivityHistoryReadFacade activityHistoryReadFacade, ActivityHistoryService activityHistoryService
     ) {
         this.activityPointGrantFacade = activityPointGrantFacade;
+        this.activityHistoryReadFacade = activityHistoryReadFacade;
         this.activityHistoryService = activityHistoryService;
     }
 
@@ -34,8 +37,8 @@ public class ActivityHistoryController {
 
     @Operation(summary = "활동 참여 이력 조회 API", description = "현재 고객의 활동 참여 이력을 조회합니다.")
     @GetMapping("/")
-    public Response<List<ActivityHistoryResponseDto>> getTotalActivityHistoryInfo(@AuthUser Long userId) {
-        return Response.ok(activityHistoryService.getAttendedHistoriesByUser(userId));
+    public Response<List<ActivityHistoryWithActivityDto>> getAttendedWithActivity(@AuthUser Long userId) {
+        return Response.ok(activityHistoryReadFacade.getUserAttendedHistoryWithActivity(userId));
     }
 
     @Operation(summary = "활동 참여 이력 저장 API", description = "현재 고객의 활동 참여 이력을 저장합니다.")

@@ -4,13 +4,17 @@ import com.example.hackathon.domain.category.entity.Category;
 import com.example.hackathon.domain.user.entity.User;
 import com.example.hackathon.global.BaseEntity;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "ACTIVITY")
 @Getter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Activity extends BaseEntity {
 
     @Id
@@ -32,8 +36,6 @@ public class Activity extends BaseEntity {
     @Column(name = "SORT_ORDER", nullable = false)
     private Integer sortOrder = 1;
 
-    @Column(name = "CATEGORY_ID", nullable = false)
-    private Long categoryId;
 
     @Enumerated(EnumType.STRING) // enum을 문자열로 저장
     @Column(name="CATEGORY_TYPE")
