@@ -38,7 +38,8 @@ dependencies {
 	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 
 	// DB
-	runtimeOnly 'com.mysql:mysql-connector-j'
+	implementation 'mysql:mysql-connector-java:8.0.33'
+	implementation 'com.h2database:h2'
 
 	// Lombok
 	compileOnly 'org.projectlombok:lombok'
