@@ -8,11 +8,14 @@ import com.example.hackathon.domain.user.entity.User;
 import com.example.hackathon.domain.user.repository.UserRepository;
 import com.example.hackathon.global.exception.BusinessException;
 import com.example.hackathon.global.response.Code;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+
 import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -21,7 +24,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class PointServiceTest {
+class PointServiceV1Test {
 
     @Mock
     private PointRepository pointRepository;
@@ -47,8 +50,8 @@ class PointServiceTest {
     }
 
     @Test
-    @DisplayName("포인트_조회_성공")
-    void getUserTotalPoint() {
+    @DisplayName("사용자 포인트 조회 - 성공 (500 포인트)")
+    void getUserTotalPoint_success() {
         // given
         when(pointRepository.findByUserId(userId)).thenReturn(Optional.of(mockPoint));
 
@@ -60,7 +63,8 @@ class PointServiceTest {
     }
 
     @Test
-    void 포인트_정보_없을때_0_반환() {
+    @DisplayName("사용자 포인트 조회 - 정보 없을 경우 0 반환")
+    void getUserTotalPoint_zeroWhenNotExists() {
         // given
         when(pointRepository.findByUserId(userId)).thenReturn(Optional.empty());
 
@@ -72,25 +76,39 @@ class PointServiceTest {
     }
 
     @Test
-    void 포인트_사용_성공() {
+    @DisplayName("포인트 사용 - 성공")
+    void usingPoint_success() {
         // given
         when(pointRepository.findByUserId(userId)).thenReturn(Optional.of(mockPoint));
 
         // when
-        pointService.updatePointBalance(userId, 200);
+        pointService.updatePointBalance(userId, ProductType.KEYRING.getPoint());
 
         // then
-        assertThat(mockPoint.getTotalPoint()).isEqualTo(300);
+        assertThat(mockPoint.getTotalPoint()).isEqualTo(279); // 500 - 200
     }
 
     @Test
-    void 포인트_부족_예외() {
+    @DisplayName("포인트 사용 - 잔여 포인트 부족 시 예외 발생")
+    void usingPoint_notEnoughPoint_throwsException() {
         // given
         when(pointRepository.findByUserId(userId)).thenReturn(Optional.of(mockPoint));
 
         // expect
-        assertThatThrownBy(() -> pointService.updatePointBalance(userId, 1000))
+        assertThatThrownBy(() -> pointService.updatePointBalance(userId, ProductType.KEYRING.getPoint()))
                 .isInstanceOf(BusinessException.class)
                 .hasMessageContaining(Code.POINT_NOT_ENOUGH.getMessage());
+    }
+
+    @Test
+    @DisplayName("포인트 사용 - 사용자 포인트 정보가 없을 시 예외 발생")
+    void usingPoint_pointEntityNotFound_throwsException() {
+        // given
+        when(pointRepository.findByUserId(userId)).thenReturn(Optional.empty());
+
+        // expect
+        assertThatThrownBy(() -> pointService.updatePointBalance(userId, ProductType.KEYRING.getPoint()))
+                .isInstanceOf(BusinessException.class)
+                .hasMessageContaining(Code.POINT_NOT_FOUND.getMessage());
     }
 }

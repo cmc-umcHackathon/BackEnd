@@ -13,7 +13,10 @@ public class ActivityParticipationFacade {
     private final ActivityService activityService;
     private final ActivityHistoryService historyService;
 
-    public ActivityParticipationFacade(ActivityService activityService, ActivityHistoryService historyService) {
+    public ActivityParticipationFacade(
+            ActivityService activityService,
+            ActivityHistoryService historyService
+    ) {
         this.activityService = activityService;
         this.historyService = historyService;
     }
@@ -26,12 +29,13 @@ public class ActivityParticipationFacade {
         List<Long> doneActivityIds = historyService.getTodayActivityIdsByUser(userId);
 
         // 2. 활동 전체 중 오늘 이미 한 활동 이력 체크
-        return activityService.getActivitiesByCategoryWithTodayFlags(categoryId, doneActivityIds);
+        return activityService.getActivitiesByCategoryWithTodayFlags(
+                categoryId,
+                doneActivityIds
+        );
     }
 
-    public List<ActivityResponseDto> getAvailableTodayMissionActivities(
-            Long userId
-    ) {
+    public List<ActivityResponseDto> getAvailableTodayMissionActivities(Long userId) {
         // 1. 오늘의 활동 이력 ID 목록 조회
         List<Long> doneActivityIds = historyService.getTodayActivityIdsByUser(userId);
 

@@ -21,7 +21,8 @@ public enum Code implements BaseCode {
 
     POINT_NOT_FOUND(HttpStatus.NOT_FOUND, "COMMON404", "해당 유저는 포인트가 존재하지 않습니다."),
     POINT_NOT_ENOUGH(HttpStatus.INTERNAL_SERVER_ERROR, "COMMON500", "보유한 포인트가 충분하지 않습니다."),
-    CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, "COMMON404", "유효한 카테고리가 없습니다.")
+    CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, "COMMON404", "유효한 카테고리가 없습니다."),
+    PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND, "COMMON404", "유효한 상품이 없습니다.")
     ;
 
     private final HttpStatus status;

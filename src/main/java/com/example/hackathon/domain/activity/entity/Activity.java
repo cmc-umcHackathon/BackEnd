@@ -25,6 +25,9 @@ public class Activity extends BaseEntity {
     @Column(name = "TITLE", nullable = false)
     private String title;
 
+    @Column(name = "SUBTITLE", nullable = false)
+    private String subtitle;
+
     @Column(name = "DESCRIPTION", nullable = false, length = 30)
     private String description;
 
@@ -35,7 +38,6 @@ public class Activity extends BaseEntity {
     @Builder.Default
     @Column(name = "SORT_ORDER", nullable = false)
     private Integer sortOrder = 1;
-
 
     @Enumerated(EnumType.STRING) // enum을 문자열로 저장
     @Column(name="CATEGORY_TYPE")

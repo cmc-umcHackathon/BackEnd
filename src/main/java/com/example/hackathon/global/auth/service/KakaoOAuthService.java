@@ -31,11 +31,9 @@ public class KakaoOAuthService implements OAuthService {
     public String loginWithKakao(String code) {
         // 1. 카카오로부터 토큰 발급
         TokenResponseDto tokenDto = kakaoOAuthClient.getToken(code);
-        log.info("tokenDto : {}", tokenDto);
 
         // 2. 사용자 정보 조회
         KakaoUserInfoDto userInfo = kakaoOAuthClient.getUserInfo(tokenDto.getAccessToken());
-        log.info("userInfo : {}", userInfo);
 
         // 3. 회원 조회 또는 저장
         User user = userRepository.findByKakaoId(userInfo.getId())
