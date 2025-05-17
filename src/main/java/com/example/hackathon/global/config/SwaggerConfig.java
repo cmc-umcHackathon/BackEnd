@@ -19,7 +19,7 @@ public class SwaggerConfig {
     private Info apiInfo() {
         return new Info()
                 .title("너디너리 해커톤 A팀")
-                .description("오늘의 실천 팀입니다.🥰")
+                .description("'오늘의 실천' 팀입니다.🥰")
                 .version("1.0.0");
     }
 }
