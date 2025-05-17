@@ -1,14 +1,13 @@
 package com.example.hackathon.domain.point.controller;
 
 
+import com.example.hackathon.domain.point.dto.PointRequestDTO;
 import com.example.hackathon.domain.point.service.PointService;
 import com.example.hackathon.global.auth.annotation.AuthUser;
 import com.example.hackathon.global.response.Response;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
@@ -26,5 +25,12 @@ public class PointController {
     public Response<Integer> getUserPoint(@AuthUser String userId) {
         Integer totalPoint = pointService.getUserTotalPoint(userId);
         return Response.ok(totalPoint);
+    }
+
+    @Operation(summary = "포인트 사용 API", description = "보유한 포인트를 사용합니다.")
+    @PostMapping("/user/product")
+    public Response<Void> usingPoint(@AuthUser Long userId, @RequestBody PointRequestDTO.buyProductReq req) {
+        pointService.usingPoint(userId, req);
+        return Response.ok();
     }
 }

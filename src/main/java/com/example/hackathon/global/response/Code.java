@@ -17,10 +17,11 @@ public enum Code implements BaseCode {
     BAD_REQUEST(HttpStatus.BAD_REQUEST, "COMMON400", "잘못된 요청입니다."),
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "COMMON401", "인증이 필요합니다."),
     FORBIDDEN(HttpStatus.FORBIDDEN, "COMMON403", "접근이 거부되었습니다."),
-    NOT_FOUND(HttpStatus.NOT_FOUND, "COMMON404", "요청한 리소스를 찾을 수 없습니다."),
+    USER_NOT_FOUND(HttpStatus.NOT_FOUND, "COMMON404", "요청한 리소스를 찾을 수 없습니다."),
 
-    // ❌ 사용자 관련 에러
-    USER_NOT_FOUND(HttpStatus.NOT_FOUND, "USER404", "해당 사용자를 찾을 수 없습니다.");
+    POINT_NOT_FOUND(HttpStatus.NOT_FOUND, "COMMON404", "해당 유저는 포인트가 존재하지 않습니다."),
+    POINT_NOT_ENOUGH(HttpStatus.INTERNAL_SERVER_ERROR, "COMMON500", "보유한 포인트가 충분하지 않습니다.")
+    ;
 
     private final HttpStatus status;
     private final String code;
