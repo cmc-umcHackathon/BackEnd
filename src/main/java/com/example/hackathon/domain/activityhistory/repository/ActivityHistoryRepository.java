@@ -36,4 +36,6 @@ public interface ActivityHistoryRepository extends JpaRepository<ActivityHistory
 
     long countByUserIdAndAttendStatusTrue(Long userId);
 
+    List<ActivityHistory> findByUserIdAndAttendStatusTrueOrderByRegDtDesc(Long userId);
+
 }
