@@ -58,5 +58,5 @@ jobs:
           aws deploy create-deployment \
             --application-name hackathon-server-code-deploy \
             --deployment-config-name CodeDeployDefault.AllAtOnce \
-            --deployment-group-name Production \
+            --deployment-group-name Poduction \
             --s3-location bucket=hackathon-server-s3,bundleType=tgz,key=$GITHUB_SHA.tar.gz
