@@ -20,7 +20,7 @@ public class UserService {
                 .orElseGet(() -> userRepository.save(userInfo.toEntity()));
     }
 
-    public UserProfileDto getProfile(String email) {
+    public UserProfileDto getProfile(Long email) {
         User user = userRepository.findById(email)
                 .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
         return new UserProfileDto(user);

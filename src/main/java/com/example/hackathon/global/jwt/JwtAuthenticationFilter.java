@@ -1,12 +1,13 @@
 package com.example.hackathon.global.jwt;
 
+import com.example.hackathon.domain.user.entity.User;
+import com.example.hackathon.domain.user.repository.UserRepository;
 import com.example.hackathon.global.util.JwtUtil;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -15,11 +16,15 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 @Component
-@RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
-//    private final UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    public JwtAuthenticationFilter(JwtUtil jwtUtil, UserRepository userRepository) {
+        this.jwtUtil = jwtUtil;
+        this.userRepository = userRepository;
+    }
 
     @Override
     protected void doFilterInternal(
@@ -34,12 +39,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             if (token != null && jwtUtil.validateToken(token)) {
                 String id = jwtUtil.extractKakaoId(token);
 
-//                User user = userRepository.findByEmail(email)
-//                        .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다: " + email));
+                User user = userRepository.findById(Long.valueOf(id))
+                        .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다: " + id));
 
                 // 인증 객체 생성 (권한 정보는 생략하거나 필요시 추가)
                 UsernamePasswordAuthenticationToken authentication =
-                        new UsernamePasswordAuthenticationToken(new Object(), null, null);
+                        new UsernamePasswordAuthenticationToken(
+                                user,
+                                null,
+                                null
+                        );
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
