@@ -1,4 +1,4 @@
-package com.example.hackathon.global.response;
+package com.example.hackathon.common.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;

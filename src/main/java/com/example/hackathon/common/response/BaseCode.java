@@ -1,4 +1,4 @@
-package com.example.hackathon.global.response;
+package com.example.hackathon.common.response;
 
 public interface BaseCode {
     ReasonDTO getReason();

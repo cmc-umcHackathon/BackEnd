@@ -1,4 +1,4 @@
-package com.example.hackathon.global.config;
+package com.example.hackathon.common.config;
 
 
 import org.springframework.context.annotation.Configuration;

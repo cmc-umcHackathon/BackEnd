@@ -1,7 +1,7 @@
-package com.example.hackathon.global.exception;
+package com.example.hackathon.common.exception;
 
-import com.example.hackathon.global.response.Code;
-import com.example.hackathon.global.response.ReasonDTO;
+import com.example.hackathon.common.response.Code;
+import com.example.hackathon.common.response.ReasonDTO;
 import lombok.Getter;
 
 @Getter

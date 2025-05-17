@@ -1,4 +1,4 @@
-package com.example.hackathon.global.config;
+package com.example.hackathon.common.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import org.springframework.context.annotation.Bean;
