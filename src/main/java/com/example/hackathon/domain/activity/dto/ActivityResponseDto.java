@@ -29,5 +29,19 @@ public class ActivityResponseDto {
         this.isCustom = isCustom;
     }
 
+    public ActivityResponseDto(
+            Long id,
+            String description,
+            int point,
+            int sortOrder,
+            boolean isCustom
+    ) {
+        this.id = id;
+        this.description = description;
+        this.point = point;
+        this.sortOrder = sortOrder;
+        this.isCustom = isCustom;
+    }
+
     // Getter 생략 가능 (Lombok 사용 시 @Getter)
 }

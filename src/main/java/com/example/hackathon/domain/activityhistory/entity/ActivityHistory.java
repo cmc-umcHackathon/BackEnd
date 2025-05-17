@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "ACTIVITY_HISTORY")
 @Getter
+@Builder
 public class ActivityHistory {
 
     @Id
@@ -19,7 +21,7 @@ public class ActivityHistory {
     private Long id;
 
     @Column(name = "USER_ID", nullable = false, length = 30)
-    private String userId;
+    private Long userId;
 
     @Column(name = "CATEGORY_ID", nullable = false)
     private Long activityId;
@@ -28,7 +30,7 @@ public class ActivityHistory {
     private Integer point = 0;
 
     @Column(name = "ATTEND_STATUS", nullable = false)
-    private Boolean attendStatus = true;
+    private Boolean attendStatus;
 
     @Column(name = "REG_DT", nullable = false)
     private LocalDateTime regDt;

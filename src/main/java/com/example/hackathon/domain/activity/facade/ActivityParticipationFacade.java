@@ -19,7 +19,7 @@ public class ActivityParticipationFacade {
     }
 
     public List<ActivityResponseDto> getAvailableActivities(
-            String userId,
+            Long userId,
             Long categoryId
     ) {
         // 1. 오늘의 활동 이력 ID 목록 조회
@@ -30,7 +30,7 @@ public class ActivityParticipationFacade {
     }
 
     public List<ActivityResponseDto> getAvailableTodayMissionActivities(
-            String userId
+            Long userId
     ) {
         // 1. 오늘의 활동 이력 ID 목록 조회
         List<Long> doneActivityIds = historyService.getTodayActivityIdsByUser(userId);

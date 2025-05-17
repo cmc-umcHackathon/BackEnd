@@ -26,9 +26,10 @@ public class ActivityController {
         this.activityService = activityService;
     }
 
-    //  @GetMapping("/by-category")
+    @Operation(summary = "현재 유효한 활동 조회 API", description = "현재 고객의 이력에 기반한 활동 정보를 조회합니다.")
+    @GetMapping("/by-category")
     public Response<List<ActivityResponseDto>> getActivities(
-            @AuthUser String userId,
+            @AuthUser Long userId,
             @RequestBody ActivityRequestDto requestDto
     ) {
         return Response.ok(
@@ -39,15 +40,18 @@ public class ActivityController {
         );
     }
 
+    @Operation(summary = "현재 유효한 오늘의 미션조회 API", description = "현재 고객의 이력에 기반한 오늘의 미션 정보를 조회합니다.")
     @GetMapping("/today-mission")
-    public List<ActivityResponseDto> getTodayMissionActivities(@AuthUser String userId) {
-        return activityParticipationFacade.getAvailableTodayMissionActivities(userId);
+    public Response<List<ActivityResponseDto>> getTodayMissionActivities(@AuthUser Long userId) {
+
+        return Response.ok(
+                activityParticipationFacade.getAvailableTodayMissionActivities(userId)
+        );
     }
 
-    @Operation(summary = "실천 사항 등록 API", description = "유저가 실천 사항을 등록합니다.")
     @PostMapping("/user/activities")
     public Response<Void> addUserActivities(
-            @AuthUser String userId,
+            @AuthUser Long userId,
             @RequestBody ActivityNewRequestDto.AddActivity activityRequest
     ) {
         activityService.addUserActivities(userId, activityRequest);

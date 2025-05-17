@@ -1,6 +1,7 @@
 package com.example.hackathon.global.auth.controller;
 
 import com.example.hackathon.global.auth.service.KakaoOAuthService;
+import com.example.hackathon.global.response.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,9 +19,9 @@ public class OAuthController {
     }
 
     @GetMapping("/kakao/callback")
-    public ResponseEntity<?> kakaoLogin(@RequestParam("code") String code) {
+    public Response<?> kakaoLogin(@RequestParam("code") String code) {
         String jwtToken = kakaoOAuthService.loginWithKakao(code);
-        return ResponseEntity.ok().body(jwtToken);
+        return Response.ok(jwtToken);
     }
 }
 

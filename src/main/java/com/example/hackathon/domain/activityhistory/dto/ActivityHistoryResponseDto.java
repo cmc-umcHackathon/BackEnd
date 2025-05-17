@@ -8,12 +8,12 @@ import java.time.LocalDateTime;
 public class ActivityHistoryResponseDto {
     private Long id;
     private Long activityId;
-    private String userId;
+    private Long userId;
     private Integer point;
     private Boolean attendStatus;
     private LocalDateTime regDt;
 
-    public ActivityHistoryResponseDto(Long id, Long activityId, String userId, Integer point, Boolean attendStatus, LocalDateTime regDt) {
+    public ActivityHistoryResponseDto(Long id, Long activityId, Long userId, Integer point, Boolean attendStatus, LocalDateTime regDt) {
         this.id = id;
         this.activityId = activityId;
         this.userId = userId;
