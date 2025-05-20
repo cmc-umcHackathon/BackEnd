@@ -2,6 +2,7 @@ package com.example.hackathon.global.util;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -21,11 +22,13 @@ public class JwtUtil {
     private long expirationTime; // in milliseconds
 
     public String generateToken(Long kakaoId) {
+        SecretKey key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+
         return Jwts.builder()
                 .setSubject(kakaoId.toString()) // subject에 kakaoId 저장
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
-                .signWith(SignatureAlgorithm.HS256, secret)
+                .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
 
@@ -57,6 +60,19 @@ public class JwtUtil {
             token = token.substring(7).trim();      // user_id 파싱을 위한 Bearer 제거
         }
         return jwtParser.parseClaimsJws(token).getBody().get("user_id", Long.class);
+    }
+
+    public Claims parseClaims(String token) {
+        if (token.startsWith("Bearer ")) {
+            token = token.substring(7).trim();      // user_id 파싱을 위한 Bearer 제거
+        }
+        SecretKey key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 
 }
